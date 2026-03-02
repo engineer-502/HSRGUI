@@ -1,0 +1,260 @@
+﻿:root {
+  --bg-shell: #202432;
+  --bg-chat: #d3d9dd;
+  --bg-bubble-a: #ededed;
+  --bg-bubble-u: #ddcaa5;
+  --text: #17191d;
+  --muted: #656a70;
+  --line: #aeb2b5;
+  --shadow: rgba(0, 0, 0, 0.2);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  color: var(--text);
+  background: radial-gradient(circle at top, #4b5375 0%, #272a39 45%, #1c1f2b 100%);
+}
+
+.viewport {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  display: grid;
+  gap: 22px;
+  grid-template-columns: minmax(320px, 500px) minmax(320px, 1fr);
+}
+
+.chat-frame {
+  background: var(--bg-chat);
+  border-radius: 0 30px 0 0;
+  overflow: hidden;
+  box-shadow: 0 16px 40px var(--shadow);
+}
+
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #b8bcc0;
+}
+
+.chat-header h1 {
+  margin: 0;
+  font-size: 46px;
+  line-height: 1;
+}
+
+.chat-header p {
+  margin: 2px 0 0;
+  color: var(--muted);
+  font-size: 18px;
+}
+
+.chat-header .close {
+  width: 34px;
+  height: 34px;
+}
+
+.chat-scroll {
+  padding: 16px;
+  max-height: 760px;
+  overflow: auto;
+}
+
+.turn {
+  margin-bottom: 18px;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #5f6469;
+  font-size: 37px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.meta img {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  border: 3px solid #464b52;
+}
+
+.meta.right {
+  justify-content: flex-end;
+}
+
+.bubble {
+  display: inline-block;
+  max-width: 95%;
+  font-size: 40px;
+  line-height: 1.45;
+  padding: 14px 18px;
+  box-shadow: 1px 2px #9ea0a1;
+}
+
+.bubble.white {
+  background: var(--bg-bubble-a);
+  border-radius: 2px 20px 20px 20px;
+}
+
+.bubble.gold {
+  background: var(--bg-bubble-u);
+  border-radius: 20px 2px 20px 20px;
+}
+
+.user {
+  text-align: right;
+}
+
+.sticker-wrap {
+  margin-top: 8px;
+}
+
+.sticker-wrap img {
+  width: 140px;
+  height: 140px;
+}
+
+.gallery {
+  background: #d8dde2;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  padding: 16px;
+  box-shadow: 0 16px 40px var(--shadow);
+}
+
+.gallery > h2 {
+  margin: 0 0 10px;
+}
+
+.card {
+  background: #f2f4f6;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+  margin-top: 10px;
+}
+
+.card h3 {
+  margin: 0 0 8px;
+}
+
+.card ul,
+.card ol {
+  margin: 6px 0 0 22px;
+}
+
+.card code {
+  background: rgba(42, 45, 52, 0.12);
+  border-radius: 4px;
+  padding: 2px 5px;
+}
+
+.code-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #23252d;
+  color: #f5f7fb;
+  border-radius: 10px 10px 0 0;
+  padding: 6px 10px;
+  font-size: 12px;
+}
+
+.code-head button {
+  border: 1px solid #9ca0a8;
+  background: transparent;
+  color: #f5f7fb;
+  border-radius: 6px;
+  padding: 3px 8px;
+  cursor: pointer;
+}
+
+pre {
+  margin: 0;
+  background: #23252d;
+  color: #f5f7fb;
+  border-radius: 0 0 10px 10px;
+  padding: 10px;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border: 1px solid #bdc3c9;
+  padding: 6px 8px;
+}
+
+thead th {
+  background: #e2e6ea;
+}
+
+blockquote {
+  margin: 0;
+  border-left: 4px solid #8e969f;
+  padding-left: 10px;
+  color: #535960;
+}
+
+.preview-image {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+}
+
+.widget {
+  border: 1px dashed #9aa1aa;
+  border-radius: 8px;
+  padding: 10px;
+  background: #eceff2;
+}
+
+.attachment {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #b8bec6;
+  border-radius: 8px;
+  padding: 8px;
+  background: #eef1f4;
+}
+
+.attachment button {
+  border: 1px solid #7f8790;
+  border-radius: 6px;
+  background: #f6f8fa;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+@media (max-width: 980px) {
+  .viewport {
+    grid-template-columns: 1fr;
+  }
+
+  .chat-header h1 {
+    font-size: 34px;
+  }
+
+  .bubble {
+    font-size: 24px;
+  }
+
+  .meta {
+    font-size: 26px;
+  }
+}

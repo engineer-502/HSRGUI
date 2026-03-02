@@ -1,0 +1,69 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HSR Chat Skin</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main class="panel">
+      <header class="header">
+        <h1>HSR Chat Skin</h1>
+        <p>ChatGPT Star Rail message renderer</p>
+      </header>
+
+      <section class="group">
+        <label class="row toggle-row" for="enabledToggle">
+          <span>Enabled</span>
+          <input id="enabledToggle" type="checkbox" />
+        </label>
+      </section>
+
+      <section class="group">
+        <label for="splitInput">Split Max Chars</label>
+        <input id="splitInput" type="number" min="160" max="320" step="5" />
+
+        <label for="userNameInput">My Name</label>
+        <input id="userNameInput" type="text" maxlength="24" placeholder="오공이" />
+
+        <label for="headerTitleInput">Header Title</label>
+        <input id="headerTitleInput" type="text" maxlength="24" placeholder="오공열차" />
+
+        <label for="headerSubtitleInput">Header Subtitle</label>
+        <input id="headerSubtitleInput" type="text" maxlength="36" placeholder="인간개조의 용광로" />
+
+        <label for="actorPreset">Actor Preset</label>
+        <select id="actorPreset">
+          <option value="march7th-stelle">March.7th / 유저</option>
+          <option value="acheron-stelle">아케론 / 유저</option>
+          <option value="castorice-stelle">카스토리스 / 유저</option>
+        </select>
+      </section>
+
+      <section class="group">
+        <label for="promptPresetSelect">Persona Prompt</label>
+        <select id="promptPresetSelect">
+          <option value="march7th-stelle">March.7th</option>
+          <option value="acheron-stelle">아케론</option>
+          <option value="castorice-stelle">카스토리스</option>
+        </select>
+
+        <label for="promptPreview">Prompt Preview</label>
+        <textarea id="promptPreview" rows="8" readonly></textarea>
+        <button id="copyPromptButton" type="button">프롬프트 복사</button>
+      </section>
+
+      <section class="group actions">
+        <button id="openPreview" type="button">Open Preview</button>
+        <button id="resetButton" type="button" class="secondary">Reset Defaults</button>
+      </section>
+
+      <footer class="footer">
+        Applies to: <code>chatgpt.com</code>, <code>chat.openai.com</code>
+      </footer>
+    </main>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

@@ -1,0 +1,156 @@
+﻿:root {
+  --bg: #d3d9dd;
+  --panel: #edeff1;
+  --accent: #ddcaa5;
+  --text: #202225;
+  --muted: #666868;
+  --line: #afb5bb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  width: 330px;
+  background: linear-gradient(180deg, #3a3f57 0%, #2f3244 48%, #252836 100%);
+  font-family: "Segoe UI", sans-serif;
+  color: var(--text);
+}
+
+.panel {
+  margin: 10px;
+  background: var(--bg);
+  border-radius: 0 22px 0 0;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  padding: 12px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 19px;
+}
+
+.header p {
+  margin: 2px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.group {
+  margin-top: 12px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.toggle-row + .toggle-row {
+  margin-top: 8px;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+label:first-child {
+  margin-top: 0;
+}
+
+input[type="number"],
+input[type="text"],
+select,
+textarea {
+  margin-top: 4px;
+  width: 100%;
+  border: 1px solid #9ea0a1;
+  border-radius: 7px;
+  background: #f8f9fa;
+  padding: 6px 8px;
+  font-size: 13px;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.35;
+  font-family: Consolas, "Courier New", monospace;
+}
+
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #c7b082;
+}
+
+.range-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: #c7b082;
+}
+
+output {
+  min-width: 42px;
+  text-align: right;
+  font-size: 13px;
+  color: #51555a;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+button {
+  border: 1px solid #a59677;
+  background: var(--accent);
+  border-radius: 8px;
+  padding: 7px 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1b1b1d;
+  cursor: pointer;
+}
+
+button:hover {
+  filter: brightness(0.97);
+}
+
+#copyPromptButton {
+  margin-top: 8px;
+  width: 100%;
+}
+
+button.secondary {
+  background: #e6e7ea;
+  border-color: #9ea0a1;
+}
+
+.footer {
+  margin-top: 10px;
+  font-size: 11px;
+  color: #555a60;
+}
+
+code {
+  background: #eceeef;
+  border-radius: 4px;
+  padding: 1px 4px;
+}

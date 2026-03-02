@@ -1,0 +1,808 @@
+﻿:root {
+  --hsr-bg-chat: #d7dfe5;
+  --hsr-bg-friend: #ededed;
+  --hsr-bg-user: #ddcaa5;
+  --hsr-text-main: #121212;
+  --hsr-text-muted: #666868;
+  --hsr-stroke: #9ea0a1;
+  --hsr-soft-line: #c3c8cd;
+  --hsr-code-bg: #1b1f2a;
+  --hsr-code-fg: #e6edf3;
+  --hsr-code-line: #3a4150;
+  --hsr-bubble-max: 70%;
+  --hsr-avatar-size: 48px;
+  --hsr-avatar-offset: 60px;
+  --hsr-lane-pad: 20px;
+  --hsr-strip-max: 980px;
+  --hsr-strip-gap: 12px;
+  --hsr-header-offset-x: 25px;
+  --hsr-header-height: 80px;
+  --hsr-header-pad-x: 26px;
+  --hsr-header-line: #b8c1c9;
+}
+
+/* Hide raw assistant body during boot/pending to avoid native GPT flash. */
+html.hsr-booting [data-message-author-role="assistant"] [data-message-content],
+html.hsr-booting [data-message-author-role="assistant"] .markdown,
+html.hsr-booting [data-message-author-role="assistant"] .prose,
+html.hsr-enabled .hsr-turn.hsr-assistant.hsr-pending > :not(.hsr-role-meta):not(.hsr-stream-overlay) {
+  visibility: hidden !important;
+}
+
+/* Streaming hard-lock: keep assistant body hidden until finalized render. */
+html.hsr-enabled .hsr-turn.hsr-assistant.hsr-streaming > :not(.hsr-role-meta):not(.hsr-stream-overlay) {
+  display: none !important;
+}
+
+html.hsr-enabled .hsr-turn.hsr-assistant.hsr-streaming [data-message-content],
+html.hsr-enabled .hsr-turn.hsr-assistant.hsr-streaming .markdown,
+html.hsr-enabled .hsr-turn.hsr-assistant.hsr-streaming .prose {
+  visibility: hidden !important;
+}
+
+html.hsr-enabled .hsr-conversation-root {
+  position: relative !important;
+  isolation: isolate !important;
+  background: transparent !important;
+  overflow-x: clip !important;
+  padding-top: var(--hsr-header-height) !important;
+}
+
+/* Center chat lane background strip (not full page). */
+html.hsr-enabled .hsr-conversation-root::before {
+  content: "" !important;
+  position: fixed !important;
+  inset: 0 auto 0 50% !important;
+  transform: translateX(-50%) !important;
+  width: min(var(--hsr-strip-max), calc(100vw - (var(--hsr-strip-gap) * 2))) !important;
+  background: var(--hsr-bg-chat) !important;
+  border-radius: 24px 24px 0 0 !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+}
+
+html.hsr-enabled .hsr-conversation-root > * {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+html.hsr-enabled .hsr-fixed-header {
+  position: fixed !important;
+  top: 0 !important;
+  left: calc(50% + var(--hsr-header-offset-x)) !important;
+  transform: translateX(-50%) !important;
+  width: min(var(--hsr-strip-max), calc(100vw - (var(--hsr-strip-gap) * 2))) !important;
+  margin: 0 !important;
+  min-height: var(--hsr-header-height) !important;
+  padding: 14px 32px 12px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-end !important;
+  align-items: flex-start !important;
+  background: var(--hsr-bg-chat) !important;
+  border-radius: 24px 24px 0 0 !important;
+  border-bottom: 1px solid var(--hsr-header-line) !important;
+  box-shadow: inset 0 -1px 0 var(--hsr-header-line) !important;
+  z-index: 4 !important;
+  pointer-events: none !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+html.hsr-enabled .hsr-fixed-header-title {
+  margin: 0 !important;
+  width: 100% !important;
+  font-size: 32px !important;
+  line-height: 1.02 !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.045em !important;
+  color: #131517 !important;
+  text-align: left !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+html.hsr-enabled .hsr-fixed-header-subtitle {
+  margin: 4px 0 0 !important;
+  width: 100% !important;
+  font-size: 12px !important;
+  line-height: 1.2 !important;
+  font-weight: 700 !important;
+  color: #6e7680 !important;
+  text-align: left !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+html.hsr-enabled .hsr-turn {
+  position: relative !important;
+  max-width: min(920px, 95vw) !important;
+  margin: 0 auto 16px !important;
+  padding: 8px var(--hsr-lane-pad) !important;
+}
+
+html.hsr-enabled .hsr-turn.hsr-assistant {
+  padding-left: var(--hsr-lane-pad) !important;
+}
+
+html.hsr-enabled .hsr-turn.hsr-user {
+  padding-right: var(--hsr-lane-pad) !important;
+}
+
+html.hsr-enabled .hsr-role-meta {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: fit-content !important;
+  max-width: 100% !important;
+  margin-bottom: 6px !important;
+}
+
+html.hsr-enabled .hsr-assistant .hsr-role-meta,
+html.hsr-enabled .hsr-role-meta[data-role="assistant"] {
+  margin-right: auto !important;
+  justify-content: flex-start !important;
+}
+
+html.hsr-enabled .hsr-user .hsr-role-meta,
+html.hsr-enabled .hsr-role-meta[data-role="user"] {
+  position: absolute !important;
+  right: var(--hsr-lane-pad) !important;
+  top: 6px !important;
+  z-index: 2 !important;
+  margin: 0 !important;
+  margin-left: auto !important;
+  justify-content: flex-end !important;
+  flex-direction: row-reverse !important;
+  align-items: flex-start !important;
+}
+
+html.hsr-enabled .hsr-role-avatar {
+  width: var(--hsr-avatar-size) !important;
+  height: var(--hsr-avatar-size) !important;
+  border-radius: 50% !important;
+  border: 3px solid #3c373d !important;
+  object-fit: cover !important;
+  background: #3c373d !important;
+  flex: 0 0 auto !important;
+}
+
+html.hsr-enabled .hsr-role-name {
+  font-size: 17px !important;
+  line-height: 1.1 !important;
+  font-weight: 700 !important;
+  color: var(--hsr-text-muted) !important;
+}
+
+html.hsr-enabled .hsr-user .hsr-role-name {
+  margin-right: 6px !important;
+  margin-top: -1px !important;
+  text-align: right !important;
+}
+
+html.hsr-enabled .hsr-message-container {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  width: auto !important;
+  max-width: 100% !important;
+}
+
+html.hsr-enabled .hsr-assistant .hsr-message-container {
+  align-items: flex-start !important;
+  margin-left: 0 !important;
+}
+
+html.hsr-enabled .hsr-user .hsr-message-container {
+  align-items: flex-end !important;
+  margin-right: calc(var(--hsr-avatar-size) + 16px) !important;
+  margin-left: auto !important;
+  margin-top: 18px !important;
+}
+
+html.hsr-enabled .hsr-message-container,
+html.hsr-enabled .hsr-message-container p,
+html.hsr-enabled .hsr-message-container li,
+html.hsr-enabled .hsr-message-container h1,
+html.hsr-enabled .hsr-message-container h2,
+html.hsr-enabled .hsr-message-container h3,
+html.hsr-enabled .hsr-message-container h4,
+html.hsr-enabled .hsr-message-container h5,
+html.hsr-enabled .hsr-message-container h6,
+html.hsr-enabled .hsr-message-container strong,
+html.hsr-enabled .hsr-message-container b,
+html.hsr-enabled .hsr-message-container em,
+html.hsr-enabled .hsr-message-container i,
+html.hsr-enabled .hsr-message-container u,
+html.hsr-enabled .hsr-message-container s,
+html.hsr-enabled .hsr-message-container small {
+  color: var(--hsr-text-main) !important;
+}
+
+html.hsr-enabled .hsr-assistant .hsr-message-container:not(:has(.hsr-block-wrap)) {
+  width: fit-content !important;
+  max-width: var(--hsr-bubble-max) !important;
+  background: var(--hsr-bg-friend) !important;
+  border-radius: 2px 20px 20px 20px !important;
+  box-shadow: -1px 2px var(--hsr-stroke) !important;
+  border: 1px solid rgba(0, 0, 0, 0.03) !important;
+  padding: 10px 14px !important;
+}
+
+/* If synthetic shells are direct children, keep container transparent
+   so only one visual bubble layer is rendered. */
+html.hsr-enabled .hsr-assistant .hsr-message-container:has(> .hsr-split-shell),
+html.hsr-enabled .hsr-assistant .hsr-message-container:has(> .hsr-image-group) {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+
+html.hsr-enabled .hsr-user .hsr-message-container:not(:has(.hsr-block-wrap)) {
+  width: fit-content !important;
+  max-width: var(--hsr-bubble-max) !important;
+  background: var(--hsr-bg-user) !important;
+  border-radius: 20px 2px 20px 20px !important;
+  box-shadow: 1px 2px var(--hsr-stroke) !important;
+  border: 1px solid rgba(0, 0, 0, 0.03) !important;
+  padding: 10px 14px !important;
+}
+
+html.hsr-enabled .hsr-user .hsr-message-container:has([class*="user-message-bubble-color"]) {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+
+html.hsr-enabled .hsr-block-wrap {
+  width: fit-content !important;
+  max-width: var(--hsr-bubble-max) !important;
+  background: var(--hsr-bg-friend) !important;
+  border-radius: 2px 20px 20px 20px !important;
+  box-shadow: -1px 2px var(--hsr-stroke) !important;
+  border: 1px solid rgba(0, 0, 0, 0.03) !important;
+  padding: 10px 14px !important;
+  margin-left: 0 !important;
+}
+
+html.hsr-enabled .hsr-user .hsr-block-wrap {
+  background: var(--hsr-bg-user) !important;
+  border-radius: 20px 2px 20px 20px !important;
+  box-shadow: 1px 2px var(--hsr-stroke) !important;
+}
+
+/* Flatten wrapper when generated UI components already draw their own shell.
+   Prevents "box inside box" artifacts for split bubbles/image groups. */
+html.hsr-enabled .hsr-block-wrap:has(> .hsr-split-shell),
+html.hsr-enabled .hsr-block-wrap:has(> .hsr-image-group),
+html.hsr-enabled .hsr-block-wrap:has(> .hsr-stream-preview) {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+
+/* Keep GPT native user bubble structure and recolor only. */
+html.hsr-enabled .hsr-user .hsr-block-wrap:has([class*="user-message-bubble-color"]) {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+
+html.hsr-enabled .hsr-user .hsr-message-container [class*="user-message-bubble-color"] {
+  background: var(--hsr-bg-user) !important;
+  color: var(--hsr-text-main) !important;
+  border: 1px solid rgba(0, 0, 0, 0.03) !important;
+  box-shadow: 1px 2px var(--hsr-stroke) !important;
+  border-radius: 20px 2px 20px 20px !important;
+}
+
+html.hsr-enabled .hsr-user .hsr-message-container [class*="user-message-bubble-color"] * {
+  color: var(--hsr-text-main) !important;
+}
+
+/* Exact fix for native GPT user bubble structure:
+   .user-message-bubble-color > .whitespace-pre-wrap.hsr-message-container */
+html.hsr-enabled .hsr-user .user-message-bubble-color {
+  background: var(--hsr-bg-user) !important;
+  color: var(--hsr-text-main) !important;
+  border: 1px solid rgba(0, 0, 0, 0.03) !important;
+  box-shadow: 1px 2px var(--hsr-stroke) !important;
+  border-radius: 20px 2px 20px 20px !important;
+}
+
+html.hsr-enabled .hsr-user .user-message-bubble-color > .whitespace-pre-wrap.hsr-message-container {
+  display: block !important;
+  width: auto !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  gap: 0 !important;
+  align-items: initial !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  color: var(--hsr-text-main) !important;
+  white-space: pre-wrap !important;
+  overflow-wrap: anywhere !important;
+  word-break: keep-all !important;
+}
+
+html.hsr-enabled .hsr-user .user-message-bubble-color > .whitespace-pre-wrap.hsr-message-container * {
+  color: var(--hsr-text-main) !important;
+}
+
+html.hsr-enabled .hsr-block-wrap,
+html.hsr-enabled .hsr-block-wrap p,
+html.hsr-enabled .hsr-block-wrap li,
+html.hsr-enabled .hsr-block-wrap h1,
+html.hsr-enabled .hsr-block-wrap h2,
+html.hsr-enabled .hsr-block-wrap h3,
+html.hsr-enabled .hsr-block-wrap h4,
+html.hsr-enabled .hsr-block-wrap h5,
+html.hsr-enabled .hsr-block-wrap h6,
+html.hsr-enabled .hsr-block-wrap strong,
+html.hsr-enabled .hsr-block-wrap b,
+html.hsr-enabled .hsr-block-wrap em,
+html.hsr-enabled .hsr-block-wrap i,
+html.hsr-enabled .hsr-block-wrap u,
+html.hsr-enabled .hsr-block-wrap s,
+html.hsr-enabled .hsr-block-wrap small {
+  color: var(--hsr-text-main) !important;
+}
+
+html.hsr-enabled .hsr-message-container mark,
+html.hsr-enabled .hsr-block-wrap mark {
+  color: #1e1f22 !important;
+  background: #f0db8c !important;
+  padding: 0 3px !important;
+  border-radius: 4px !important;
+}
+
+html.hsr-enabled .hsr-block-wrap > * {
+  margin: 0 !important;
+}
+
+html.hsr-enabled .hsr-block-wrap + .hsr-block-wrap {
+  margin-top: 6px !important;
+}
+
+html.hsr-enabled .hsr-block-code-block,
+html.hsr-enabled .hsr-block-table,
+html.hsr-enabled .hsr-block-image,
+html.hsr-enabled .hsr-block-file-attachment,
+html.hsr-enabled .hsr-block-widget {
+  max-width: var(--hsr-bubble-max) !important;
+  width: var(--hsr-bubble-max) !important;
+  background: #f6f6f6 !important;
+  border-radius: 10px !important;
+  border: 1px solid var(--hsr-soft-line) !important;
+}
+
+html.hsr-enabled .hsr-block-image {
+  padding: 10px !important;
+  min-width: 280px !important;
+  border-radius: 2px 20px 20px 20px !important;
+  box-shadow: -1px 2px var(--hsr-stroke) !important;
+  overflow: hidden !important;
+}
+
+html.hsr-enabled .hsr-user .hsr-block-image {
+  border-radius: 20px 2px 20px 20px !important;
+  box-shadow: 1px 2px var(--hsr-stroke) !important;
+}
+
+html.hsr-enabled .hsr-image-group {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) !important;
+  gap: 8px !important;
+  width: var(--hsr-bubble-max) !important;
+  max-width: var(--hsr-bubble-max) !important;
+  background: #f6f6f6 !important;
+  border: 1px solid var(--hsr-soft-line) !important;
+  border-radius: 2px 20px 20px 20px !important;
+  box-shadow: -1px 2px var(--hsr-stroke) !important;
+  padding: 10px !important;
+  overflow: hidden !important;
+}
+
+html.hsr-enabled .hsr-user .hsr-image-group {
+  border-radius: 20px 2px 20px 20px !important;
+  box-shadow: 1px 2px var(--hsr-stroke) !important;
+}
+
+html.hsr-enabled .hsr-image-group > .hsr-block-wrap {
+  width: auto !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  border-radius: 10px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+html.hsr-enabled .hsr-image-group > .hsr-block-wrap + .hsr-block-wrap {
+  margin-top: 0 !important;
+}
+
+html.hsr-enabled .hsr-image-group .hsr-image {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  border-radius: 10px !important;
+}
+
+html.hsr-enabled .hsr-block-image > * {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+html.hsr-enabled .hsr-block-image .hsr-image,
+html.hsr-enabled .hsr-image-group .hsr-image {
+  width: 100% !important;
+  aspect-ratio: 16 / 10 !important;
+  object-fit: cover !important;
+  background: #cfd5db !important;
+}
+
+/* Fallback: 이미지 블록이 hsr-block-image로 래핑되지 않은 경우 */
+html.hsr-enabled .hsr-assistant .hsr-message-container
+  > :is(div,figure,picture):not(.hsr-block-wrap):not(.hsr-random-sticker):has(img):not(:has(pre,table,ul,ol,blockquote,code,h1,h2,h3,h4,h5,h6)) {
+  max-width: var(--hsr-bubble-max) !important;
+  width: var(--hsr-bubble-max) !important;
+  min-width: 280px !important;
+  background: #f6f6f6 !important;
+  border: 1px solid var(--hsr-soft-line) !important;
+  border-radius: 2px 20px 20px 20px !important;
+  box-shadow: -1px 2px var(--hsr-stroke) !important;
+  padding: 10px !important;
+  overflow: hidden !important;
+}
+
+html.hsr-enabled .hsr-user .hsr-message-container
+  > :is(div,figure,picture):not(.hsr-block-wrap):not(.hsr-random-sticker):has(img):not(:has(pre,table,ul,ol,blockquote,code,h1,h2,h3,h4,h5,h6)) {
+  max-width: var(--hsr-bubble-max) !important;
+  width: var(--hsr-bubble-max) !important;
+  min-width: 280px !important;
+  background: #f6f6f6 !important;
+  border: 1px solid var(--hsr-soft-line) !important;
+  border-radius: 20px 2px 20px 20px !important;
+  box-shadow: 1px 2px var(--hsr-stroke) !important;
+  padding: 10px !important;
+  overflow: hidden !important;
+}
+
+html.hsr-enabled .hsr-code-pre {
+  margin: 0 !important;
+  background: var(--hsr-code-bg) !important;
+  color: var(--hsr-code-fg) !important;
+  border: 1px solid var(--hsr-code-line) !important;
+  border-radius: 8px !important;
+  padding: 12px !important;
+  overflow: auto !important;
+}
+
+html.hsr-enabled .hsr-code-block {
+  color: var(--hsr-code-fg) !important;
+}
+
+html.hsr-enabled .hsr-block-code-block,
+html.hsr-enabled .hsr-block-code-block :is(div,span,button,strong,b,em,i,code,a) {
+  color: var(--hsr-code-fg) !important;
+}
+
+html.hsr-enabled .hsr-block-code-block svg {
+  color: var(--hsr-code-fg) !important;
+  stroke: currentColor !important;
+}
+
+html.hsr-enabled .hsr-message-container pre.hsr-code-pre,
+html.hsr-enabled .hsr-message-container pre.hsr-code-pre *,
+html.hsr-enabled .hsr-block-wrap pre.hsr-code-pre,
+html.hsr-enabled .hsr-block-wrap pre.hsr-code-pre * {
+  color: var(--hsr-code-fg) !important;
+}
+
+html.hsr-enabled .hsr-message-container pre.hsr-code-pre [style*="color"],
+html.hsr-enabled .hsr-block-wrap pre.hsr-code-pre [style*="color"] {
+  color: var(--hsr-code-fg) !important;
+}
+
+html.hsr-enabled .hsr-inline-code {
+  background: rgba(60, 55, 61, 0.12) !important;
+  border-radius: 4px !important;
+  padding: 1px 5px !important;
+  color: #23262b !important;
+}
+
+html.hsr-enabled .hsr-table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+}
+
+html.hsr-enabled .hsr-table th,
+html.hsr-enabled .hsr-table td {
+  border: 1px solid #bfc4c8 !important;
+  padding: 8px 10px !important;
+  color: var(--hsr-text-main) !important;
+}
+
+html.hsr-enabled .hsr-table thead th {
+  background: #dde1e4 !important;
+}
+
+html.hsr-enabled .hsr-quote {
+  margin: 0 !important;
+  border-left: 4px solid var(--hsr-stroke) !important;
+  padding-left: 10px !important;
+  color: #4f5358 !important;
+}
+
+html.hsr-enabled .hsr-link {
+  color: #2f5fd0 !important;
+  text-decoration: underline !important;
+}
+
+/* Hide source/citation UI and source-chip links in image responses. */
+html.hsr-enabled .hsr-hide-source-link,
+html.hsr-enabled [data-testid*="citation"],
+html.hsr-enabled [data-testid*="source"],
+html.hsr-enabled [data-testid*="reference"],
+html.hsr-enabled button[aria-label*="Source"],
+html.hsr-enabled button[aria-label*="출처"],
+html.hsr-enabled a[aria-label*="Source"],
+html.hsr-enabled a[aria-label*="출처"] {
+  display: none !important;
+}
+
+html.hsr-enabled .hsr-image {
+  display: block !important;
+  max-width: 100% !important;
+  border-radius: 10px !important;
+}
+
+html.hsr-enabled .hsr-original-paragraph {
+  display: none !important;
+}
+
+html.hsr-enabled .hsr-stream-overlay {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-top: 6px !important;
+}
+
+html.hsr-enabled .hsr-assistant > .hsr-stream-overlay {
+  align-items: flex-start !important;
+  padding-left: calc(var(--hsr-avatar-size) + 14px) !important;
+}
+
+html.hsr-enabled .hsr-user > .hsr-stream-overlay {
+  align-items: flex-end !important;
+  padding-right: calc(var(--hsr-avatar-size) + 16px) !important;
+  margin-top: 18px !important;
+}
+
+html.hsr-enabled .hsr-stream-preview {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  width: fit-content !important;
+  max-width: var(--hsr-bubble-max) !important;
+}
+
+html.hsr-enabled .hsr-stream-bubble {
+  margin: 0 !important;
+}
+
+.hsr-typing-shell,
+.hsr-seq-loader {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  max-width: var(--hsr-bubble-max);
+  padding: 10px 14px;
+  background: var(--hsr-bg-friend);
+  border-radius: 2px 20px 20px 20px;
+  box-shadow: -1px 2px var(--hsr-stroke);
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  font-size: 0;
+  line-height: 0;
+}
+
+.hsr-typing-dot,
+.hsr-seq-dot {
+  display: inline-block;
+  flex: 0 0 9px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #17181b;
+  border: 0;
+  opacity: 0.35;
+  animation: hsr-dot-pulse 1s ease-in-out infinite;
+}
+
+.hsr-typing-dot:nth-child(2),
+.hsr-seq-dot:nth-child(2) {
+  animation-delay: 0.16s;
+}
+
+.hsr-typing-dot:nth-child(3),
+.hsr-seq-dot:nth-child(3) {
+  animation-delay: 0.32s;
+}
+
+html.hsr-enabled .hsr-sentence-bubble.hsr-seq-hidden {
+  display: none !important;
+}
+
+html.hsr-enabled .hsr-sentence-bubble.hsr-seq-visible {
+  display: block !important;
+  animation: hsr-bubble-enter 0.22s ease-out both;
+}
+
+html.hsr-enabled .hsr-final-enter {
+  animation: hsr-final-enter 0.17s ease-out both !important;
+  will-change: opacity, transform;
+}
+
+html.hsr-enabled .hsr-final-seq-hidden {
+  display: none !important;
+}
+
+@keyframes hsr-dot-pulse {
+  0%,
+  100% {
+    opacity: 0.28;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-1px);
+  }
+}
+
+@keyframes hsr-bubble-enter {
+  from {
+    opacity: 0;
+    transform: translateY(7px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes hsr-final-enter {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hsr-split-shell {
+  display: none;
+}
+
+html.hsr-enabled .hsr-split-shell {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+}
+
+html.hsr-enabled .hsr-sentence-bubble {
+  margin: 0 !important;
+  padding: 10px 14px !important;
+  max-width: var(--hsr-bubble-max) !important;
+  background: var(--hsr-bg-friend) !important;
+  border-radius: 2px 20px 20px 20px !important;
+  box-shadow: -1px 2px var(--hsr-stroke) !important;
+  color: var(--hsr-text-main) !important;
+  line-height: 1.58 !important;
+  white-space: pre-wrap !important;
+  overflow-wrap: anywhere !important;
+  word-break: keep-all !important;
+}
+
+html.hsr-enabled .hsr-user .hsr-sentence-bubble {
+  background: var(--hsr-bg-user) !important;
+  border-radius: 20px 2px 20px 20px !important;
+  box-shadow: 1px 2px var(--hsr-stroke) !important;
+}
+
+html.hsr-enabled .hsr-random-sticker {
+  margin-top: 8px !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  overflow: visible !important;
+}
+
+html.hsr-enabled .hsr-user .hsr-random-sticker {
+  align-self: flex-end !important;
+}
+
+html.hsr-enabled .hsr-sticker-img {
+  width: 132px !important;
+  height: 132px !important;
+  object-fit: contain !important;
+}
+
+@media (max-width: 920px) {
+:root {
+    --hsr-avatar-size: 42px;
+    --hsr-avatar-offset: 52px;
+    --hsr-bubble-max: 78%;
+    --hsr-lane-pad: 14px;
+    --hsr-strip-gap: 0px;
+    --hsr-header-offset-x: 0px;
+    --hsr-header-height: 84px;
+    --hsr-header-pad-x: 16px;
+  }
+
+  html.hsr-enabled .hsr-fixed-header {
+    padding: 10px 14px 8px !important;
+  }
+
+  html.hsr-enabled .hsr-fixed-header-title {
+    font-size: 26px !important;
+  }
+
+  html.hsr-enabled .hsr-fixed-header-subtitle {
+    margin-top: 2px !important;
+    font-size: 10px !important;
+  }
+
+  html.hsr-enabled .hsr-role-name {
+    font-size: 15px !important;
+  }
+
+  html.hsr-enabled .hsr-user .hsr-role-meta,
+  html.hsr-enabled .hsr-role-meta[data-role="user"] {
+    right: var(--hsr-lane-pad) !important;
+    top: 4px !important;
+  }
+
+  html.hsr-enabled .hsr-user .hsr-message-container {
+    margin-top: 16px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  html.hsr-enabled .hsr-fixed-header {
+    padding: 8px 12px 7px !important;
+    min-height: 74px !important;
+    border-radius: 16px 16px 0 0 !important;
+  }
+
+  html.hsr-enabled .hsr-fixed-header-title {
+    font-size: 23px !important;
+    line-height: 1 !important;
+  }
+
+  html.hsr-enabled .hsr-fixed-header-subtitle {
+    font-size: 9px !important;
+  }
+}
