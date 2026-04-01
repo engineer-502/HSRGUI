@@ -21,6 +21,7 @@
         "https://chat.openai.com/*"
       ],
       "js": [
+        "shared/characterCatalog.js",
         "content/selectors.js",
         "content/splitter.js",
         "content/stickers.js",

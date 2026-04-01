@@ -61,10 +61,12 @@ chatgpt_hsr_extension/
     content.css                 # HSR 스킨 스타일 전체
     selectors.js                # ChatGPT DOM 셀렉터/블록 분류/스트리밍 탐지
     splitter.js                 # 문장 분리 알고리즘(ko 우선)
-    stickers.js                 # 스티커팩 정의/정규화/랜덤 픽
+    stickers.js                 # 전체 스티커풀 정규화/랜덤 픽
+  shared/
+    characterCatalog.js         # 캐릭터 카탈로그/프롬프트/스티커 매핑
   popup/
-    popup.html                  # 설정 UI(프리셋/이름/헤더/프롬프트 복사)
-    popup.js                    # storage sync 저장/불러오기, 프리셋 연동
+    popup.html                  # 설정 UI(검색/캐릭터 선택/프롬프트 복사)
+    popup.js                    # storage sync 저장/불러오기, 카탈로그 연동
     popup.css                   # 팝업 스타일
   preview/
     preview.html/.css/.js       # 컴포넌트 샘플 프리뷰
@@ -78,19 +80,22 @@ chatgpt_hsr_extension/
 
 - `enabled`: 스킨 활성화 여부
 - `splitMaxChars`: 문장 분리 최대 글자수
-- `actorPreset`: 캐릭터 프리셋
-  - `march7th-stelle`
-  - `acheron-stelle`
-  - `castorice-stelle`
-- `stickerPack`: 프리셋별 스티커 파일 목록
+- `assistantCharacterId`: 선택한 캐릭터 id
+- `stickerPack`: 선택 캐릭터 기준 스티커 파일 목록
 - `userName`: 사용자 말풍선 표시 이름
 - `headerTitle`, `headerSubtitle`: 상단 고정 헤더 텍스트
 
+참고:
+
+- 기존 `actorPreset` 저장값은 로드 시 자동으로 `assistantCharacterId`로 마이그레이션됨
+- 스티커는 전용 팩이 없는 캐릭터의 경우 `sticker_1~428` 공용 풀을 사용함
+
 ## 캐릭터별 리소스 매핑
 
-- 삼칠이: `assets/icons/March_7th.png`, `sticker_1~16`
-- 아케론: `assets/icons/Acheron.png`, `sticker_193~196`
-- 카스토리스: `assets/icons/Castorice.png`, `sticker_330, 336~340, 425`
+- March 7th: `assets/icons/March_7th.png`, `sticker_1~16`
+- Acheron: `assets/icons/Acheron.png`, `sticker_193~196`
+- Castorice: `assets/icons/Castorice.png`, `sticker_330, 336~340, 425`
+- 기타 캐릭터: `assets/icons/*.png`, 공용 스티커 풀 `sticker_1~428`
 
 ## 트러블슈팅
 

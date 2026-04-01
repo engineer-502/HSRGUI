@@ -1,5 +1,5 @@
-﻿<!doctype html>
-<html lang="en">
+<!doctype html>
+<html lang="ko">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -10,7 +10,7 @@
     <main class="panel">
       <header class="header">
         <h1>HSR Chat Skin</h1>
-        <p>ChatGPT Star Rail message renderer</p>
+        <p>ChatGPT Star Rail character catalog</p>
       </header>
 
       <section class="group">
@@ -32,25 +32,38 @@
 
         <label for="headerSubtitleInput">Header Subtitle</label>
         <input id="headerSubtitleInput" type="text" maxlength="36" placeholder="인간개조의 용광로" />
-
-        <label for="actorPreset">Actor Preset</label>
-        <select id="actorPreset">
-          <option value="march7th-stelle">March.7th / 유저</option>
-          <option value="acheron-stelle">아케론 / 유저</option>
-          <option value="castorice-stelle">카스토리스 / 유저</option>
-        </select>
       </section>
 
       <section class="group">
-        <label for="promptPresetSelect">Persona Prompt</label>
-        <select id="promptPresetSelect">
-          <option value="march7th-stelle">March.7th</option>
-          <option value="acheron-stelle">아케론</option>
-          <option value="castorice-stelle">카스토리스</option>
-        </select>
+        <div class="row section-head">
+          <label for="characterSearchInput">Assistant Character</label>
+          <span id="characterCount" class="meta-note"></span>
+        </div>
+        <input id="characterSearchInput" type="text" maxlength="40" placeholder="이름 검색..." />
 
-        <label for="promptPreview">Prompt Preview</label>
-        <textarea id="promptPreview" rows="8" readonly></textarea>
+        <article id="selectedCharacterCard" class="character-card" aria-live="polite">
+          <img id="selectedCharacterIcon" class="character-card-icon" src="" alt="" />
+          <div class="character-card-body">
+            <div class="character-card-top">
+              <strong id="selectedCharacterName"></strong>
+              <span id="selectedCharacterStatus" class="status-pill"></span>
+            </div>
+            <p id="selectedCharacterSubtitle" class="character-card-subtitle"></p>
+          </div>
+        </article>
+
+        <div id="characterList" class="character-list" role="list"></div>
+      </section>
+
+      <section class="group">
+        <div class="row section-head">
+          <label for="promptPreview">Persona Prompt</label>
+          <span id="promptState" class="meta-note"></span>
+        </div>
+        <textarea id="promptPreview" rows="10" readonly></textarea>
+        <p class="helper">
+          Prompt source baseline: HoYoWiki, HoYoLAB official character materials, Fandom lore supplement.
+        </p>
         <button id="copyPromptButton" type="button">프롬프트 복사</button>
       </section>
 
@@ -64,6 +77,7 @@
       </footer>
     </main>
 
+    <script src="../shared/characterCatalog.js"></script>
     <script src="popup.js"></script>
   </body>
 </html>

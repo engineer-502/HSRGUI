@@ -1,10 +1,11 @@
 ﻿(() => {
-  if (!window.HSRSelectors || !window.HSRSplitter || !window.HSRStickers) {
+  if (!window.HSRCharacterCatalog || !window.HSRSelectors || !window.HSRSplitter || !window.HSRStickers) {
     return;
   }
 
   document.documentElement.classList.add("hsr-booting");
 
+  const catalog = window.HSRCharacterCatalog;
   const CONFIG_KEY = "hsrConfig";
   const RENDER_VERSION = "hsr-render-v10-streaming-final-only";
   const STREAM_STABLE_MS = 1400;
@@ -15,28 +16,7 @@
   const LEGACY_HEADER_TITLES = new Set(["오공열차"]);
   const LEGACY_HEADER_SUBTITLES = new Set(["인간개조의 용광로", "인간개조의 용광로"]);
   const LEGACY_USER_NAMES = new Set(["Stelle", "stelle"]);
-  const DEFAULT_ACTOR_PRESET = "march7th-stelle";
-  const PRESET_STICKER_PACKS = window.HSRStickers.PRESET_STICKER_PACKS || {};
-  const ACTOR_PRESETS = {
-    "march7th-stelle": {
-      assistantName: "March.7th",
-      assistantIcon: "assets/icons/March_7th.png",
-      userIcon: "assets/icons/stelle.png",
-      stickerPack: PRESET_STICKER_PACKS["march7th-stelle"]
-    },
-    "acheron-stelle": {
-      assistantName: "아케론",
-      assistantIcon: "assets/icons/Acheron.png",
-      userIcon: "assets/icons/stelle.png",
-      stickerPack: PRESET_STICKER_PACKS["acheron-stelle"]
-    },
-    "castorice-stelle": {
-      assistantName: "카스토리스",
-      assistantIcon: "assets/icons/Castorice.png",
-      userIcon: "assets/icons/stelle.png",
-      stickerPack: PRESET_STICKER_PACKS["castorice-stelle"]
-    }
-  };
+  const DEFAULT_ASSISTANT_CHARACTER_ID = catalog.DEFAULT_CHARACTER_ID;
   const DEFAULT_CONFIG = {
     enabled: true,
     scope: "conversation-only",
@@ -45,8 +25,8 @@
     splitMode: "sentence-length-hybrid",
     splitMaxChars: 180,
     splitMaxSentences: 2,
-    stickerPack: (ACTOR_PRESETS[DEFAULT_ACTOR_PRESET].stickerPack || window.HSRStickers.DEFAULT_STICKERS).slice(),
-    actorPreset: DEFAULT_ACTOR_PRESET,
+    assistantCharacterId: DEFAULT_ASSISTANT_CHARACTER_ID,
+    stickerPack: catalog.getStickerPack(DEFAULT_ASSISTANT_CHARACTER_ID),
     userName: "오공이",
     headerTitle: DEFAULT_HEADER_TITLE,
     headerSubtitle: DEFAULT_HEADER_SUBTITLE
@@ -64,21 +44,10 @@
     streamMeta: new WeakMap()
   };
 
-  function normalizeActorPreset(value) {
-    const preset = String(value || "").trim();
-    if (Object.prototype.hasOwnProperty.call(ACTOR_PRESETS, preset)) {
-      return preset;
-    }
-    return DEFAULT_ACTOR_PRESET;
-  }
-
-  function getPresetStickerPack(actorPreset) {
-    const preset = ACTOR_PRESETS[normalizeActorPreset(actorPreset)];
-    const pack = preset && Array.isArray(preset.stickerPack) ? preset.stickerPack : null;
-    if (pack && pack.length) {
-      return pack.slice();
-    }
-    return window.HSRStickers.DEFAULT_STICKERS.slice();
+  function normalizeAssistantCharacterId(input, legacyActorPreset) {
+    return catalog.normalizeCharacterId(
+      input || catalog.migrateLegacyActorPreset(legacyActorPreset) || DEFAULT_ASSISTANT_CHARACTER_ID
+    );
   }
 
   function mergeConfig(raw) {
@@ -92,10 +61,13 @@
     merged.splitMode = "sentence-length-hybrid";
     merged.splitMaxChars = clampNumber(merged.splitMaxChars, 160, 320, 180);
     merged.splitMaxSentences = 2;
-    merged.actorPreset = normalizeActorPreset(merged.actorPreset);
+    merged.assistantCharacterId = normalizeAssistantCharacterId(
+      merged.assistantCharacterId,
+      merged.actorPreset
+    );
     merged.stickerPack = window.HSRStickers.normalizeStickerPack(
       merged.stickerPack,
-      getPresetStickerPack(merged.actorPreset)
+      catalog.getStickerPack(merged.assistantCharacterId)
     );
     merged.userName = String(merged.userName || "").trim().slice(0, 24) || "오공이";
     merged.headerTitle =
@@ -113,6 +85,7 @@
       merged.headerSubtitle = DEFAULT_HEADER_SUBTITLE;
     }
 
+    delete merged.actorPreset;
     return merged;
   }
 
@@ -120,7 +93,7 @@
     if (!raw || typeof raw !== "object") {
       return true;
     }
-    return Object.keys(merged).some((key) => {
+    return "actorPreset" in raw || Object.keys(merged).some((key) => {
       return JSON.stringify(raw[key]) !== JSON.stringify(merged[key]);
     });
   }
@@ -187,13 +160,13 @@
   }
 
   function resolveActors() {
-    const preset = ACTOR_PRESETS[normalizeActorPreset(state.config.actorPreset)];
+    const character = catalog.getCharacter(state.config.assistantCharacterId);
     const userName = String(state.config.userName || "").trim().slice(0, 24) || "오공이";
     return {
-      assistantName: preset.assistantName,
-      assistantIcon: chrome.runtime.getURL(preset.assistantIcon),
+      assistantName: character.displayName,
+      assistantIcon: chrome.runtime.getURL(`assets/icons/${character.iconFile}`),
       userName,
-      userIcon: chrome.runtime.getURL(preset.userIcon)
+      userIcon: chrome.runtime.getURL(catalog.DEFAULT_USER_ICON)
     };
   }
 
