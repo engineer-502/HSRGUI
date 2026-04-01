@@ -1,4 +1,4 @@
-# ChatGPT HSR UI Extension
+﻿# ChatGPT HSR UI Extension
 
 ChatGPT 웹 대화 화면(`chatgpt.com`, `chat.openai.com`)에 Honkai: Star Rail 스타일 채팅 스킨을 적용하는 MV3 크롬 익스텐션입니다.
 

@@ -1,0 +1,156 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HSR UI Preview</title>
+    <link rel="stylesheet" href="preview.css" />
+  </head>
+  <body>
+    <main class="viewport">
+      <section class="chat-frame">
+        <header class="chat-header">
+          <div>
+            <h1>Asta</h1>
+            <p>Cannot buy this...</p>
+          </div>
+          <img class="close" src="../assets/symbols/close.png" alt="close" />
+        </header>
+
+        <div class="chat-scroll">
+          <article class="turn assistant">
+            <div class="meta">
+              <img src="../assets/icons/asta.png" alt="Asta" />
+              <span>Asta</span>
+            </div>
+            <div class="bubble white">
+              Have you seen this before? There is an online chat event in town this week.
+            </div>
+            <div class="bubble white">
+              If you are interested, I can send you a link.
+            </div>
+          </article>
+
+          <article class="turn user">
+            <div class="meta right">
+              <span>Stelle</span>
+              <img src="../assets/icons/stelle.png" alt="Stelle" />
+            </div>
+            <div class="bubble gold">Send the link. I am interested.</div>
+          </article>
+
+          <article class="turn assistant">
+            <div class="meta">
+              <img src="../assets/icons/asta.png" alt="Asta" />
+              <span>Asta</span>
+            </div>
+            <div class="bubble white">Sometimes a random sticker appears below the assistant response.</div>
+            <div class="sticker-wrap">
+              <img src="../assets/stickers/sticker_114.png" alt="sticker" />
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="gallery">
+        <h2>Component Output Samples</h2>
+
+        <div class="card">
+          <h3>1. Heading</h3>
+          <h2>H2 title sample</h2>
+          <h3>H3 title sample</h3>
+        </div>
+
+        <div class="card">
+          <h3>2. Emphasis</h3>
+          <p><strong>Bold text</strong> and <em>italic text</em> and <s>strikethrough</s>.</p>
+        </div>
+
+        <div class="card">
+          <h3>3. List</h3>
+          <ul>
+            <li>Item A</li>
+            <li>Item B</li>
+            <li>Item C</li>
+          </ul>
+          <ol>
+            <li>First</li>
+            <li>Second</li>
+            <li>Third</li>
+          </ol>
+        </div>
+
+        <div class="card">
+          <h3>4. Inline Code</h3>
+          <p>Use <code>print("hello")</code> inside text.</p>
+        </div>
+
+        <div class="card">
+          <h3>5. Code Block</h3>
+          <div class="code-head">
+            <span>python</span>
+            <button data-copy="def test():\n    assert 1 + 1 == 2">Copy</button>
+          </div>
+          <pre><code>def test():
+    assert 1 + 1 == 2</code></pre>
+        </div>
+
+        <div class="card">
+          <h3>6. Table</h3>
+          <table>
+            <thead>
+              <tr><th>Name</th><th>Role</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>GPT</td><td>Model</td><td>Active</td></tr>
+              <tr><td>User</td><td>Input</td><td>Typing</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <h3>7. Quote</h3>
+          <blockquote>This is a quote block used for context and emphasis.</blockquote>
+        </div>
+
+        <div class="card">
+          <h3>8. Horizontal Rule</h3>
+          <hr />
+        </div>
+
+        <div class="card">
+          <h3>9. Image</h3>
+          <img class="preview-image" src="../assets/stickers/sticker_81.png" alt="image sample" />
+        </div>
+
+        <div class="card">
+          <h3>10. Link</h3>
+          <p><a href="https://openai.com" target="_blank" rel="noreferrer">OpenAI Website</a></p>
+          <p><a href="https://www.python.org" target="_blank" rel="noreferrer">https://www.python.org</a></p>
+        </div>
+
+        <div class="card">
+          <h3>11. Mixed</h3>
+          <p>1) Item</p>
+          <p>2) Item</p>
+          <pre><code>{ "status": "ok" }</code></pre>
+        </div>
+
+        <div class="card">
+          <h3>12. Widget Placeholder</h3>
+          <div class="widget">Weather Widget Placeholder: 18 C, clear sky.</div>
+        </div>
+
+        <div class="card">
+          <h3>13. Attachment Placeholder</h3>
+          <div class="attachment">
+            <span>project-plan.pdf</span>
+            <button>Download</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="preview.js"></script>
+  </body>
+</html>
