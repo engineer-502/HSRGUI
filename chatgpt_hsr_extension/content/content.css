@@ -12,6 +12,7 @@
   --hsr-bubble-max: 70%;
   --hsr-avatar-size: 48px;
   --hsr-avatar-offset: 60px;
+  --hsr-meta-bubble-gap: 10px;
   --hsr-lane-pad: 20px;
   --hsr-strip-max: 980px;
   --hsr-strip-gap: 12px;
@@ -137,7 +138,7 @@ html.hsr-enabled .hsr-role-meta {
   gap: 8px !important;
   width: fit-content !important;
   max-width: 100% !important;
-  margin-bottom: 6px !important;
+  margin-bottom: var(--hsr-meta-bubble-gap) !important;
 }
 
 html.hsr-enabled .hsr-assistant .hsr-role-meta,
@@ -148,15 +149,15 @@ html.hsr-enabled .hsr-role-meta[data-role="assistant"] {
 
 html.hsr-enabled .hsr-user .hsr-role-meta,
 html.hsr-enabled .hsr-role-meta[data-role="user"] {
-  position: absolute !important;
-  right: var(--hsr-lane-pad) !important;
-  top: 6px !important;
-  z-index: 2 !important;
-  margin: 0 !important;
+  position: relative !important;
+  right: auto !important;
+  top: auto !important;
+  z-index: auto !important;
+  margin: 0 0 var(--hsr-meta-bubble-gap) auto !important;
   margin-left: auto !important;
   justify-content: flex-end !important;
   flex-direction: row-reverse !important;
-  align-items: flex-start !important;
+  align-items: center !important;
 }
 
 html.hsr-enabled .hsr-role-avatar {
@@ -178,7 +179,7 @@ html.hsr-enabled .hsr-role-name {
 
 html.hsr-enabled .hsr-user .hsr-role-name {
   margin-right: 6px !important;
-  margin-top: -1px !important;
+  margin-top: 0 !important;
   text-align: right !important;
 }
 
@@ -199,7 +200,7 @@ html.hsr-enabled .hsr-user .hsr-message-container {
   align-items: flex-end !important;
   margin-right: calc(var(--hsr-avatar-size) + 16px) !important;
   margin-left: auto !important;
-  margin-top: 18px !important;
+  margin-top: 0 !important;
 }
 
 html.hsr-enabled .hsr-message-container,
@@ -234,7 +235,8 @@ html.hsr-enabled .hsr-assistant .hsr-message-container:not(:has(.hsr-block-wrap)
 /* If synthetic shells are direct children, keep container transparent
    so only one visual bubble layer is rendered. */
 html.hsr-enabled .hsr-assistant .hsr-message-container:has(> .hsr-split-shell),
-html.hsr-enabled .hsr-assistant .hsr-message-container:has(> .hsr-image-group) {
+html.hsr-enabled .hsr-assistant .hsr-message-container:has(> .hsr-image-group),
+html.hsr-enabled .hsr-assistant .hsr-message-container:has(.hsr-block-wrap) {
   background: transparent !important;
   border: 0 !important;
   box-shadow: none !important;
@@ -281,7 +283,10 @@ html.hsr-enabled .hsr-user .hsr-block-wrap {
    Prevents "box inside box" artifacts for split bubbles/image groups. */
 html.hsr-enabled .hsr-block-wrap:has(> .hsr-split-shell),
 html.hsr-enabled .hsr-block-wrap:has(> .hsr-image-group),
-html.hsr-enabled .hsr-block-wrap:has(> .hsr-stream-preview) {
+html.hsr-enabled .hsr-block-wrap:has(> .hsr-stream-preview),
+html.hsr-enabled .hsr-block-wrap:has(.hsr-block-wrap),
+html.hsr-enabled .hsr-block-wrap:has(.hsr-image-group),
+html.hsr-enabled .hsr-block-wrap:has(.hsr-split-shell) {
   background: transparent !important;
   border: 0 !important;
   box-shadow: none !important;
@@ -754,6 +759,7 @@ html.hsr-enabled .hsr-sticker-img {
 :root {
     --hsr-avatar-size: 42px;
     --hsr-avatar-offset: 52px;
+    --hsr-meta-bubble-gap: 8px;
     --hsr-bubble-max: 78%;
     --hsr-lane-pad: 14px;
     --hsr-strip-gap: 0px;
@@ -781,12 +787,11 @@ html.hsr-enabled .hsr-sticker-img {
 
   html.hsr-enabled .hsr-user .hsr-role-meta,
   html.hsr-enabled .hsr-role-meta[data-role="user"] {
-    right: var(--hsr-lane-pad) !important;
-    top: 4px !important;
+    margin-bottom: var(--hsr-meta-bubble-gap) !important;
   }
 
   html.hsr-enabled .hsr-user .hsr-message-container {
-    margin-top: 16px !important;
+    margin-top: 0 !important;
   }
 }
 

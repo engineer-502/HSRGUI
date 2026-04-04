@@ -9,6 +9,88 @@
   };
   const LEGACY_ACTOR_PRESET_MAP = { "march7th-stelle": "march_7th", "acheron-stelle": "acheron", "castorice-stelle": "castorice" };
   const GROUP_LABELS = { released: "출시 캐릭터", researching: "리서치 대기", special: "특수 / 기타" };
+  const LOCALIZED_DISPLAY_NAMES = {
+    acheron: "아케론",
+    aglaea: "아글라이아",
+    anaxa: "아낙사",
+    anonymous: "익명",
+    archer: "아처",
+    argenti: "아젠티",
+    arlan: "아를란",
+    ashveil: "애쉬베일",
+    asta: "아스타",
+    aventurine: "어벤츄린",
+    bailu: "백로",
+    black_swan: "블랙 스완",
+    blade: "블레이드",
+    boothill: "부트힐",
+    bronya: "브로냐",
+    caelus: "카일루스",
+    castorice: "카스토리스",
+    cerydra: "케리드라",
+    cipher: "사이퍼",
+    clara: "클라라",
+    cyrene: "키레네",
+    dan_heng: "단항",
+    dr_ratio: "Dr. 레이시오",
+    evernight: "에버나이트",
+    feixiao: "비소",
+    firefly: "반디",
+    fugue: "망귀인",
+    fu_xuan: "부현",
+    gallagher: "갤러거",
+    gepard: "게파드",
+    guinaifen: "계네빈",
+    hanya: "한아",
+    herta: "헤르타",
+    himeko: "히메코",
+    hook: "후크",
+    huohuo: "곽향",
+    hyacine: "히아킨",
+    hysilens: "히실렌스",
+    jade: "제이드",
+    jiaoqiu: "초구",
+    jing_yuan: "경원",
+    jingliu: "경류",
+    kafka: "카프카",
+    lingsha: "영사",
+    luka: "루카",
+    luocha: "나찰",
+    lynx: "링스",
+    march_7th: "마치 세븐스",
+    misha: "미샤",
+    moze: "모제",
+    mydei: "마이데이",
+    natasha: "나타샤",
+    pela: "페라",
+    phainon: "파이논",
+    pom_pom: "폼폼",
+    qingque: "청작",
+    rappa: "라파",
+    robin: "로빈",
+    ruan_mei: "완매",
+    saber: "세이버",
+    sampo: "삼포",
+    screwllum: "스크루룸",
+    seele: "제레",
+    serval: "서벌",
+    silver_wolf: "은랑",
+    sparkle: "스파클",
+    sparxie: "스파키",
+    stelle: "스텔레",
+    sushang: "소상",
+    the_dahlia: "달리아",
+    the_herta: "더 헤르타",
+    tingyun: "정운",
+    topaz: "토파즈",
+    tribbie: "트리비",
+    welt: "웰트",
+    xueyi: "설의",
+    yanqing: "연경",
+    yao_guang: "효광",
+    yukong: "어공",
+    yunli: "운리"
+  };
 
   const STYLE_PRESETS = {
     cheerful: {
@@ -235,17 +317,20 @@
 
   const CHARACTER_MAP = new Map();
   const CHARACTERS = BASE_CHARACTERS.map((character) => {
+    const localizedDisplayName = LOCALIZED_DISPLAY_NAMES[character.id] || character.displayName;
+    const aliases = uniqueStrings([character.displayName, ...(character.aliases || [])]);
     const stickerPack = Array.isArray(SPECIAL_STICKER_PACKS[character.id]) ? SPECIAL_STICKER_PACKS[character.id].slice() : ALL_STICKERS.slice();
-    const searchTokens = uniqueStrings([character.id, character.displayName, character.subtitle, character.iconFile.replace(/\.png$/i, ""), ...(character.aliases || [])]);
+    const localizedCharacter = { ...character, displayName: localizedDisplayName, aliases };
+    const searchTokens = uniqueStrings([character.id, localizedDisplayName, character.displayName, character.subtitle, character.iconFile.replace(/\.png$/i, ""), ...aliases]);
     const record = {
       id: character.id,
-      displayName: character.displayName,
+      displayName: localizedDisplayName,
       group: character.group,
       releaseStatus: character.releaseStatus,
       iconFile: character.iconFile,
       searchTokens,
       promptStatus: character.promptStatus,
-      promptText: buildPromptText({ ...character, stickerPack, searchTokens }),
+      promptText: buildPromptText({ ...localizedCharacter, stickerPack, searchTokens }),
       stickerPack,
       subtitle: character.subtitle || null,
       promptSources: character.promptStatus === "ready" ? ["HoYoWiki", "HoYoLAB/공식 소개", "Fandom 로어 보완"] : ["서비스 레포 자산", "추가 공식 자료 확인 필요"]
