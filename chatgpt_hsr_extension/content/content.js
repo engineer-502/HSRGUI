@@ -1,39 +1,30 @@
 ﻿(() => {
-  if (!window.HSRCharacterCatalog || !window.HSRSelectors || !window.HSRSplitter || !window.HSRStickers) {
+  if (
+    !window.HSRCharacterCatalog ||
+    !window.HSRConfigModel ||
+    !window.HSRSelectors ||
+    !window.HSRSplitter ||
+    !window.HSRStickers
+  ) {
     return;
   }
 
   document.documentElement.classList.add("hsr-booting");
 
   const catalog = window.HSRCharacterCatalog;
-  const CONFIG_KEY = "hsrConfig";
-  const RENDER_VERSION = "hsr-render-v10-streaming-final-only";
+  const configModel = window.HSRConfigModel;
+  const CONFIG_KEY = configModel.CONFIG_KEY;
+  const RENDER_VERSION = "hsr-render-v11-gemini-live-preview";
   const STREAM_STABLE_MS = 1400;
   const STREAM_FALLBACK_FINALIZE_MS = 12000;
+  const GEMINI_FORCE_FINALIZE_MS = 2200;
   const FIXED_HEADER_ID = "hsr-fixed-header";
-  const DEFAULT_HEADER_TITLE = "오공열차";
-  const DEFAULT_HEADER_SUBTITLE = "인간개조의 용광로";
-  const LEGACY_HEADER_TITLES = new Set(["오공열차"]);
-  const LEGACY_HEADER_SUBTITLES = new Set(["인간개조의 용광로", "인간개조의 용광로"]);
-  const LEGACY_USER_NAMES = new Set(["Stelle", "stelle"]);
-  const DEFAULT_ASSISTANT_CHARACTER_ID = catalog.DEFAULT_CHARACTER_ID;
-  const DEFAULT_CONFIG = {
-    enabled: true,
-    scope: "conversation-only",
-    domains: "chatgpt+chat_openai",
-    fidelity: "screenshot-high",
-    splitMode: "sentence-length-hybrid",
-    splitMaxChars: 180,
-    splitMaxSentences: 2,
-    assistantCharacterId: DEFAULT_ASSISTANT_CHARACTER_ID,
-    stickerPack: catalog.getStickerPack(DEFAULT_ASSISTANT_CHARACTER_ID),
-    userName: "오공이",
-    headerTitle: DEFAULT_HEADER_TITLE,
-    headerSubtitle: DEFAULT_HEADER_SUBTITLE
-  };
-
   const state = {
-    config: { ...DEFAULT_CONFIG },
+    siteKey: configModel.detectSiteFromLocation(window.location),
+    config: configModel.getRuntimeSiteProfile(
+      null,
+      configModel.detectSiteFromLocation(window.location)
+    ),
     observer: null,
     processTimer: null,
     assistantTurnCounter: 0,
@@ -41,70 +32,9 @@
     turnMeta: new WeakMap(),
     revealTimers: new WeakMap(),
     streamHiddenRoots: new WeakMap(),
-    streamMeta: new WeakMap()
+    streamMeta: new WeakMap(),
+    interactionBound: false
   };
-
-  function normalizeAssistantCharacterId(input, legacyActorPreset) {
-    return catalog.normalizeCharacterId(
-      input || catalog.migrateLegacyActorPreset(legacyActorPreset) || DEFAULT_ASSISTANT_CHARACTER_ID
-    );
-  }
-
-  function mergeConfig(raw) {
-    const source = raw && typeof raw === "object" ? raw : {};
-    const merged = { ...DEFAULT_CONFIG, ...source };
-
-    merged.enabled = Boolean(merged.enabled);
-    merged.scope = "conversation-only";
-    merged.domains = "chatgpt+chat_openai";
-    merged.fidelity = "screenshot-high";
-    merged.splitMode = "sentence-length-hybrid";
-    merged.splitMaxChars = clampNumber(merged.splitMaxChars, 160, 320, 180);
-    merged.splitMaxSentences = 2;
-    merged.assistantCharacterId = normalizeAssistantCharacterId(
-      merged.assistantCharacterId,
-      merged.actorPreset
-    );
-    merged.stickerPack = window.HSRStickers.normalizeStickerPack(
-      merged.stickerPack,
-      catalog.getStickerPack(merged.assistantCharacterId)
-    );
-    merged.userName = String(merged.userName || "").trim().slice(0, 24) || "오공이";
-    merged.headerTitle =
-      String(merged.headerTitle || "").trim().slice(0, 24) || DEFAULT_HEADER_TITLE;
-    merged.headerSubtitle =
-      String(merged.headerSubtitle || "").trim().slice(0, 36) || DEFAULT_HEADER_SUBTITLE;
-
-    if (LEGACY_USER_NAMES.has(merged.userName)) {
-      merged.userName = "오공이";
-    }
-    if (LEGACY_HEADER_TITLES.has(merged.headerTitle)) {
-      merged.headerTitle = DEFAULT_HEADER_TITLE;
-    }
-    if (LEGACY_HEADER_SUBTITLES.has(merged.headerSubtitle)) {
-      merged.headerSubtitle = DEFAULT_HEADER_SUBTITLE;
-    }
-
-    delete merged.actorPreset;
-    return merged;
-  }
-
-  function needsPersist(raw, merged) {
-    if (!raw || typeof raw !== "object") {
-      return true;
-    }
-    return "actorPreset" in raw || Object.keys(merged).some((key) => {
-      return JSON.stringify(raw[key]) !== JSON.stringify(merged[key]);
-    });
-  }
-
-  function clampNumber(value, min, max, fallback) {
-    const number = Number(value);
-    if (Number.isNaN(number)) {
-      return fallback;
-    }
-    return Math.min(max, Math.max(min, number));
-  }
 
   function getConfigFromStorage() {
     return new Promise((resolve) => {
@@ -266,6 +196,33 @@
     return Boolean(String(value || "").replace(/[\s\u200b\u200c\u200d\u2060\ufeff]/g, ""));
   }
 
+  function canSoftSplitFormattedParagraph(block) {
+    if (
+      state.siteKey !== "gemini" ||
+      !block ||
+      !(block instanceof HTMLElement) ||
+      !window.HSRSelectors.isParagraphCandidate(block)
+    ) {
+      return false;
+    }
+
+    const text = String(block.textContent || "").replace(/\s+/g, " ").trim();
+    if (!text) {
+      return false;
+    }
+
+    const minSplitChars = Math.max(96, Math.floor(state.config.splitMaxChars * 0.78));
+    if (text.length < minSplitChars) {
+      return false;
+    }
+
+    const banned = block.querySelector(
+      "a,code,pre,table,ul,ol,blockquote,img,video,svg,button,details,summary,kbd,mark,sup,sub,math,mjx-container"
+    );
+
+    return !banned;
+  }
+
   function isSkippableEmptyBlock(block, kind) {
     if (!block || !(block instanceof HTMLElement)) {
       return true;
@@ -288,6 +245,46 @@
     );
 
     return !hasRichContent;
+  }
+
+  function hasDecoratedAssistantContent(contentRoot) {
+    if (!contentRoot || !(contentRoot instanceof HTMLElement)) {
+      return false;
+    }
+
+    return Boolean(
+      contentRoot.querySelector(
+        ":scope > .hsr-block-wrap, :scope > .hsr-split-shell, :scope > .hsr-image-group, :scope > .hsr-random-sticker"
+      )
+    );
+  }
+
+  function isGeminiStaleStreamingTurn(turnNode) {
+    if (state.siteKey !== "gemini" || !turnNode || !(turnNode instanceof HTMLElement)) {
+      return false;
+    }
+
+    const processedHash = String(turnNode.dataset.hsrProcessedHash || "");
+    if (!processedHash) {
+      return false;
+    }
+
+    const rawContentRoot = window.HSRSelectors.getPrimaryContentRoot(turnNode, "assistant");
+    if (!rawContentRoot || !(rawContentRoot instanceof HTMLElement)) {
+      return false;
+    }
+
+    const contentRoot =
+      rawContentRoot.matches("p,span,code,strong,em")
+        ? rawContentRoot.parentElement || rawContentRoot
+        : rawContentRoot;
+
+    const currentHash = computeContentHash(contentRoot);
+    if (currentHash !== processedHash) {
+      return false;
+    }
+
+    return hasVisibleText(extractStreamingText(contentRoot));
   }
 
   function isLikelyImageSourceLink(linkNode) {
@@ -479,23 +476,29 @@
   }
 
   function hasAssistantFinalActions(turnNode) {
-    if (!turnNode || !(turnNode instanceof HTMLElement)) {
+    return window.HSRSelectors.hasFinalActions(turnNode);
+  }
+
+  function isGeminiGenerationActive() {
+    if (state.siteKey !== "gemini") {
       return false;
     }
 
-    const selectors = [
-      '[data-testid*="copy-turn"]',
-      '[data-testid*="conversation-turn-feedback"]',
-      '[data-testid*="message-actions"]',
-      'button[aria-label*="Copy"]',
-      'button[aria-label*="복사"]',
-      'button[aria-label*="Good response"]',
-      'button[aria-label*="Bad response"]',
-      'button[aria-label*="좋아요"]',
-      'button[aria-label*="싫어요"]'
-    ];
+    const candidates = Array.from(
+      document.querySelectorAll(
+        'button[aria-label*="대답 생성 중지"], button[aria-label*="생성 중지"], button[aria-label*="Stop"], .send-button.stop'
+      )
+    );
 
-    return selectors.some((selector) => Boolean(turnNode.querySelector(selector)));
+    return candidates.some((node) => {
+      if (!(node instanceof HTMLElement)) {
+        return false;
+      }
+      if (node.getAttribute("aria-disabled") === "true" || node.hasAttribute("disabled")) {
+        return false;
+      }
+      return node.offsetParent !== null;
+    });
   }
 
   function createDotLoader(shellClass, dotClass) {
@@ -673,7 +676,7 @@
     }
 
     if (chunks.length === 1) {
-      return source.length >= state.config.splitMaxChars ? chunks : [];
+      return [];
     }
 
     const minChunkChars = Math.max(90, Math.floor(state.config.splitMaxChars * 0.72));
@@ -917,9 +920,12 @@
         role === "assistant" &&
         !streaming &&
         kind === "paragraph" &&
-        window.HSRSelectors.isParagraphCandidate(block) &&
-        window.HSRSplitter.isPlainParagraph(block) &&
-        !window.HSRSelectors.hasInlineFormatting(block);
+        ((
+          window.HSRSelectors.isParagraphCandidate(block) &&
+          window.HSRSplitter.isPlainParagraph(block) &&
+          !window.HSRSelectors.hasInlineFormatting(block)
+        ) ||
+          canSoftSplitFormattedParagraph(block));
 
       if (canSplit) {
         upsertSplitShell(block);
@@ -938,7 +944,15 @@
 
     contentRoot.querySelectorAll("a").forEach((node) => {
       node.classList.add("hsr-link");
-      if (role === "assistant" && hasImageContent && isLikelyImageSourceLink(node)) {
+      const preserveGeminiSource =
+        state.siteKey === "gemini" &&
+        (node.closest(".hsr-gemini-image-results") || node.closest(".hsr-gemini-image-card"));
+      if (
+        role === "assistant" &&
+        hasImageContent &&
+        !preserveGeminiSource &&
+        isLikelyImageSourceLink(node)
+      ) {
         node.classList.add("hsr-hide-source-link");
       } else {
         node.classList.remove("hsr-hide-source-link");
@@ -956,9 +970,44 @@
       }
     });
 
+    decorateGeminiRichContent(contentRoot);
     pruneEmptyBubbles(contentRoot);
     contentRoot.querySelectorAll("img").forEach((node) => node.classList.add("hsr-image"));
     normalizeImageGroups(contentRoot);
+  }
+
+  function decorateGeminiRichContent(contentRoot) {
+    if (state.siteKey !== "gemini" || !contentRoot || !(contentRoot instanceof HTMLElement)) {
+      return;
+    }
+
+    contentRoot.querySelectorAll(".attachment-container.search-images").forEach((node) => {
+      node.classList.add("hsr-image-group", "hsr-gemini-image-results");
+    });
+
+    contentRoot.querySelectorAll("single-image").forEach((node) => {
+      node.classList.add("hsr-gemini-image-card");
+    });
+
+    contentRoot.querySelectorAll(".image-container").forEach((node) => {
+      node.classList.add("hsr-gemini-image-card");
+    });
+
+    contentRoot.querySelectorAll("single-image img, .image-container img").forEach((node) => {
+      node.classList.add("hsr-image", "hsr-gemini-result-image");
+    });
+
+    contentRoot.querySelectorAll(".image-source-link").forEach((node) => {
+      node.classList.add("hsr-gemini-image-link");
+    });
+
+    contentRoot.querySelectorAll(".source, .source .label").forEach((node) => {
+      node.classList.add("hsr-gemini-image-source");
+    });
+
+    contentRoot.querySelectorAll("response-element").forEach((node) => {
+      node.classList.add("hsr-native-widget");
+    });
   }
 
   function normalizeImageGroups(contentRoot) {
@@ -1148,13 +1197,33 @@
 
     const stableFor = now - streamMeta.stableSince;
     const wasStreaming = turnNode.dataset.hsrWasStreaming === "1";
-    const turnIsActiveAssistant = activeAssistantTurn ? activeAssistantTurn === turnNode : true;
+    const turnIsActiveAssistant = activeAssistantTurn ? activeAssistantTurn === turnNode : false;
     const detectedStreaming =
       turnIsActiveAssistant && window.HSRSelectors.isStreaming(turnNode);
     const hasFinalActions = hasAssistantFinalActions(turnNode);
     const hasProcessedHash = Boolean(turnNode.dataset.hsrProcessedHash);
     const streamStartTs = Number(turnNode.dataset.hsrStreamStartTs || 0);
     const streamAgeMs = streamStartTs > 0 ? now - streamStartTs : 0;
+    const assistantMeta = getOrCreateAssistantMeta(turnNode, initialPass);
+    const hasDecoratedContent = hasDecoratedAssistantContent(contentRoot);
+
+    if (
+      !initialPass &&
+      assistantMeta.finalized &&
+      !wasStreaming &&
+      !turnIsActiveAssistant &&
+      turnNode.dataset.hsrProcessedHash === currentHash &&
+      hasDecoratedContent
+    ) {
+      setAssistantStreamingState(turnNode, contentRoot, false);
+      turnNode.classList.remove("hsr-pending");
+      turnNode.classList.remove("hsr-stream-live");
+      turnNode.removeAttribute("data-hsr-stream-live");
+      turnNode.removeAttribute("data-hsr-stream-preview-used");
+      turnNode.dataset.hsrWasStreaming = "0";
+      turnNode.dataset.hsrPainted = "1";
+      return;
+    }
 
     // Hard lock while streaming: do not reveal partial token output.
     let streaming = detectedStreaming;
@@ -1176,34 +1245,76 @@
       }
     }
 
+    const geminiStreamingText =
+      state.siteKey === "gemini" ? extractStreamingText(contentRoot) : "";
+    const hasGeminiStreamingText =
+      state.siteKey === "gemini" && hasVisibleText(geminiStreamingText);
+    const staleGeminiStreaming =
+      state.siteKey === "gemini" &&
+      Boolean(turnNode.dataset.hsrProcessedHash) &&
+      turnNode.dataset.hsrProcessedHash === currentHash &&
+      hasGeminiStreamingText &&
+      assistantMeta.finalized;
+
+    if (streaming && state.siteKey === "gemini" && hasGeminiStreamingText) {
+      const geminiShouldForceFinalize =
+        (!isGeminiGenerationActive() && stableFor >= 420) ||
+        (hasFinalActions && stableFor >= 620) ||
+        (streamAgeMs >= 900 && stableFor >= GEMINI_FORCE_FINALIZE_MS);
+
+      if (geminiShouldForceFinalize) {
+        streaming = false;
+      }
+    }
+
+    if (staleGeminiStreaming) {
+      streaming = false;
+    }
+
     if (streaming && !streamStartTs) {
       turnNode.dataset.hsrStreamStartTs = String(now);
     }
 
     setAssistantStreamingState(turnNode, contentRoot, streaming);
+    turnNode.classList.remove("hsr-stream-live");
     turnNode.classList.remove("hsr-pending");
     turnNode.dataset.hsrPainted = "1";
-
-    const assistantMeta = getOrCreateAssistantMeta(turnNode, initialPass);
 
     if (streaming) {
       turnNode.dataset.hsrWasStreaming = "1";
       assistantMeta.finalized = false;
+
+      turnNode.removeAttribute("data-hsr-stream-live");
+      turnNode.removeAttribute("data-hsr-stream-preview-used");
+
+      if (state.siteKey === "gemini") {
+        const pollDelay = detectedStreaming
+          ? (hasGeminiStreamingText ? 260 : 380)
+          : Math.max(160, Math.min(500, STREAM_STABLE_MS - stableFor + 120));
+        scheduleProcess(pollDelay);
+      } else if (!detectedStreaming) {
+        // Gemini can stop mutating the DOM before the quiet-period check passes.
+        // Poll once more so we can finalize instead of getting stuck in the loader state.
+        scheduleProcess(Math.max(160, Math.min(500, STREAM_STABLE_MS - stableFor + 120)));
+      }
       return;
     }
 
     const streamEnded = wasStreaming;
+    const streamPreviewUsed = turnNode.dataset.hsrStreamPreviewUsed === "1";
     turnNode.dataset.hsrWasStreaming = "0";
+    turnNode.removeAttribute("data-hsr-stream-live");
     turnNode.removeAttribute("data-hsr-stream-start-ts");
 
     const hash = currentHash;
-    if (turnNode.dataset.hsrProcessedHash !== hash || streamEnded) {
+    if (turnNode.dataset.hsrProcessedHash !== hash || streamEnded || !hasDecoratedContent) {
       decorateBlocks(contentRoot, role, false);
       turnNode.dataset.hsrProcessedHash = hash;
     }
 
     if (initialPass) {
       assistantMeta.finalized = true;
+      turnNode.removeAttribute("data-hsr-stream-preview-used");
       return;
     }
 
@@ -1212,6 +1323,20 @@
 
       // Animate only when this assistant turn just finished live streaming.
       if (streamEnded) {
+        if (state.siteKey === "gemini") {
+          clearShellTimers(contentRoot);
+          contentRoot.querySelectorAll(".hsr-final-enter,.hsr-final-seq-hidden").forEach((node) => {
+            if (!(node instanceof HTMLElement)) {
+              return;
+            }
+            node.classList.remove("hsr-final-enter");
+            node.classList.remove("hsr-final-seq-hidden");
+          });
+          maybeInjectSticker(turnNode, contentRoot);
+          turnNode.removeAttribute("data-hsr-final-anim-hash");
+          return;
+        }
+
         const animDelay = startFinalCascadeAnimation(contentRoot, hash);
         if (animDelay > 0) {
           window.setTimeout(() => {
@@ -1224,14 +1349,47 @@
         maybeInjectSticker(turnNode, contentRoot);
       }
     }
+
+    if (streamEnded || streamPreviewUsed) {
+      turnNode.removeAttribute("data-hsr-stream-preview-used");
+    }
+  }
+
+  function resetGeminiHelperClasses() {
+    document
+      .querySelectorAll(
+        ".hsr-gemini-image-results,.hsr-gemini-image-card,.hsr-gemini-image-link,.hsr-gemini-image-source,.hsr-gemini-result-image,.hsr-native-widget"
+      )
+      .forEach((node) => {
+        node.classList.remove(
+          "hsr-image-group",
+          "hsr-gemini-image-results",
+          "hsr-gemini-image-card",
+          "hsr-gemini-image-link",
+          "hsr-gemini-image-source",
+          "hsr-gemini-result-image",
+          "hsr-native-widget"
+        );
+      });
+  }
+
+  function applySiteClasses() {
+    for (const key of configModel.SITE_KEYS) {
+      document.documentElement.classList.toggle(`hsr-site-${key}`, key === state.siteKey);
+    }
   }
 
   function applyEnabledState() {
+    applySiteClasses();
     document.documentElement.classList.toggle("hsr-enabled", state.config.enabled);
 
-    const main = document.querySelector("main");
-    if (main) {
-      main.classList.toggle("hsr-conversation-root", state.config.enabled);
+    document.querySelectorAll(".hsr-conversation-root").forEach((node) => {
+      node.classList.remove("hsr-conversation-root");
+    });
+
+    const conversationRoot = window.HSRSelectors.findConversationRoot(document);
+    if (conversationRoot && state.config.enabled) {
+      conversationRoot.classList.add("hsr-conversation-root");
     }
 
     if (state.config.enabled) {
@@ -1241,7 +1399,7 @@
     }
 
     if (!state.config.enabled) {
-      document.documentElement.classList.remove("hsr-booting");
+      document.documentElement.classList.remove("hsr-booting", "hsr-zero-state");
       document.querySelectorAll("[data-hsr-original-display]").forEach((node) => {
         if (!(node instanceof HTMLElement)) {
           return;
@@ -1264,6 +1422,9 @@
       document.querySelectorAll(".hsr-stream-overlay,.hsr-typing-shell,.hsr-seq-loader").forEach((node) => {
         node.remove();
       });
+      document.querySelectorAll(".hsr-stream-live").forEach((node) => {
+        node.classList.remove("hsr-stream-live");
+      });
       document.querySelectorAll(".hsr-final-enter,.hsr-final-seq-hidden").forEach((node) => {
         if (!(node instanceof HTMLElement)) {
           return;
@@ -1274,6 +1435,9 @@
       document.querySelectorAll("[data-hsr-stream-preview-used]").forEach((node) => {
         node.removeAttribute("data-hsr-stream-preview-used");
       });
+      document.querySelectorAll("[data-hsr-stream-live]").forEach((node) => {
+        node.removeAttribute("data-hsr-stream-live");
+      });
       document.querySelectorAll("[data-hsr-final-anim-hash]").forEach((node) => {
         node.removeAttribute("data-hsr-final-anim-hash");
       });
@@ -1283,6 +1447,7 @@
       document.querySelectorAll("[data-hsr-painted]").forEach((node) => {
         node.removeAttribute("data-hsr-painted");
       });
+      resetGeminiHelperClasses();
       state.streamHiddenRoots = new WeakMap();
       state.streamMeta = new WeakMap();
       state.revealTimers = new WeakMap();
@@ -1308,17 +1473,7 @@
       return;
     }
 
-    if (node.matches('[data-message-author-role="assistant"]')) {
-      const fallbackTurn =
-        node.closest('article[data-testid^="conversation-turn-"]') ||
-        node.closest('[data-testid*="conversation-turn"]') ||
-        node.closest("article") ||
-        node.closest(".group.w-full") ||
-        node;
-      markAssistantTurnPending(fallbackTurn);
-    }
-
-    const turns = window.HSRSelectors.findTurnNodes(node);
+    const turns = window.HSRSelectors.findPendingAssistantTurnsFromMutation(node);
     for (const turn of turns) {
       markAssistantTurnPending(turn);
     }
@@ -1334,17 +1489,13 @@
       return null;
     }
 
-    const localStreamingSelectors = [
-      '[data-is-streaming="true"]',
-      ".result-streaming",
-      '[data-testid*="stop-button"]',
-      'button[aria-label*="Stop"]',
-      'button[aria-label*="중지"]'
-    ];
-
     for (let i = assistants.length - 1; i >= 0; i -= 1) {
       const turn = assistants[i];
       if (!turn || !(turn instanceof HTMLElement)) {
+        continue;
+      }
+
+      if (isGeminiStaleStreamingTurn(turn)) {
         continue;
       }
 
@@ -1356,16 +1507,12 @@
         return turn;
       }
 
-      if (
-        localStreamingSelectors.some(
-          (selector) => turn.matches(selector) || Boolean(turn.querySelector(selector))
-        )
-      ) {
+      if (window.HSRSelectors.isStreaming(turn)) {
         return turn;
       }
     }
 
-    return assistants[assistants.length - 1];
+    return null;
   }
 
   function processAllTurns(initialPass = false) {
@@ -1376,6 +1523,7 @@
     }
 
     const turns = window.HSRSelectors.findTurnNodes(document);
+    document.documentElement.classList.toggle("hsr-zero-state", turns.length === 0);
     const activeAssistantTurn = resolveActiveAssistantTurn(turns);
 
     for (const turn of turns) {
@@ -1387,14 +1535,75 @@
     }
   }
 
-  function scheduleProcess() {
+  function scheduleProcess(delay = 30) {
     if (state.processTimer) {
       clearTimeout(state.processTimer);
     }
 
     state.processTimer = window.setTimeout(() => {
       processAllTurns(false);
-    }, 30);
+    }, delay);
+  }
+
+  function scheduleProcessBurst(delays = [0, 60, 180, 420, 900]) {
+    for (const delay of delays) {
+      window.setTimeout(() => {
+        processAllTurns(false);
+      }, delay);
+    }
+  }
+
+  function bindImmediateInteractionListeners() {
+    if (state.interactionBound || state.siteKey !== "gemini") {
+      return;
+    }
+
+    const isGeminiComposerTarget = (target) => {
+      return Boolean(
+        target instanceof Element &&
+          (target.closest("rich-textarea") ||
+            target.closest(".ql-editor[role=\"textbox\"]") ||
+            target.closest("input-container"))
+      );
+    };
+
+    document.addEventListener(
+      "keydown",
+      (event) => {
+        if (
+          event.key !== "Enter" ||
+          event.shiftKey ||
+          event.altKey ||
+          event.ctrlKey ||
+          event.metaKey ||
+          event.isComposing ||
+          !isGeminiComposerTarget(event.target)
+        ) {
+          return;
+        }
+
+        scheduleProcessBurst([0, 50, 140, 320, 700, 1200]);
+      },
+      true
+    );
+
+    document.addEventListener(
+      "click",
+      (event) => {
+        const target = event.target;
+        if (
+          !(target instanceof Element) ||
+          !target.closest('button[aria-label="메시지 보내기"], .send-button.submit, .send-button-container')
+        ) {
+          return;
+        }
+
+        scheduleProcessBurst([0, 50, 140, 320, 700, 1200]);
+      },
+      true
+    );
+
+    state.interactionBound = true;
   }
 
   function startObserver() {
@@ -1415,15 +1624,18 @@
             markPendingFromMutationNode(node);
             if (
               node instanceof Element &&
-              (node.matches('[data-message-author-role="assistant"]') ||
-                node.querySelector('[data-message-author-role="assistant"]'))
+              window.HSRSelectors.findPendingAssistantTurnsFromMutation(node).length
             ) {
               hasAssistantAdded = true;
             }
           }
         }
 
-        if (mutation.type === "childList" || mutation.type === "characterData") {
+        if (
+          mutation.type === "childList" ||
+          mutation.type === "characterData" ||
+          mutation.type === "attributes"
+        ) {
           scheduleProcess();
         }
       }
@@ -1436,16 +1648,18 @@
     state.observer.observe(document.body, {
       childList: true,
       subtree: true,
-      characterData: true
+      characterData: true,
+      attributes: true,
+      attributeFilter: ["aria-busy", "class", "style", "disabled", "aria-disabled"]
     });
   }
 
   async function initializeConfig() {
     const stored = await getConfigFromStorage();
-    const merged = mergeConfig(stored);
-    state.config = merged;
+    const merged = configModel.mergeConfig(stored);
+    state.config = configModel.getRuntimeSiteProfile(merged, state.siteKey);
 
-    if (needsPersist(stored, merged)) {
+    if (configModel.needsPersist(stored, merged)) {
       await setConfigToStorage(merged);
     }
   }
@@ -1456,7 +1670,8 @@
         return;
       }
 
-      state.config = mergeConfig(changes[CONFIG_KEY].newValue);
+      const merged = configModel.mergeConfig(changes[CONFIG_KEY].newValue);
+      state.config = configModel.getRuntimeSiteProfile(merged, state.siteKey);
       applyEnabledState();
 
       if (state.config.enabled) {
@@ -1469,6 +1684,7 @@
     await initializeConfig();
     processAllTurns(true);
     document.documentElement.classList.remove("hsr-booting");
+    bindImmediateInteractionListeners();
     startObserver();
     bindStorageEvents();
   }

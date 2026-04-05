@@ -2,11 +2,16 @@
   const DEFAULT_CHARACTER_ID = "march_7th";
   const DEFAULT_USER_ICON = "assets/icons/stelle.png";
   const ALL_STICKERS = Array.from({ length: 428 }, (_, index) => `sticker_${index + 1}.png`);
-  const SPECIAL_STICKER_PACKS = {
+  const LEGACY_SPECIAL_STICKER_PACKS = {
     march_7th: Array.from({ length: 16 }, (_, index) => `sticker_${index + 1}.png`),
     acheron: ["sticker_193.png", "sticker_194.png", "sticker_195.png", "sticker_196.png"],
     castorice: ["sticker_330.png", "sticker_336.png", "sticker_337.png", "sticker_338.png", "sticker_339.png", "sticker_340.png", "sticker_425.png"]
   };
+  const GENERATED_SPECIAL_STICKER_PACKS =
+    window.HSRStickerCharacterPacks && typeof window.HSRStickerCharacterPacks === "object"
+      ? window.HSRStickerCharacterPacks
+      : {};
+  const SPECIAL_STICKER_PACKS = { ...LEGACY_SPECIAL_STICKER_PACKS, ...GENERATED_SPECIAL_STICKER_PACKS };
   const LEGACY_ACTOR_PRESET_MAP = { "march7th-stelle": "march_7th", "acheron-stelle": "acheron", "castorice-stelle": "castorice" };
   const GROUP_LABELS = { released: "출시 캐릭터", researching: "리서치 대기", special: "특수 / 기타" };
   const LOCALIZED_DISPLAY_NAMES = {
@@ -90,6 +95,89 @@
     yao_guang: "효광",
     yukong: "어공",
     yunli: "운리"
+  };
+
+  const POPUP_KOREAN_SUBTITLES = {
+    acheron: "이제 떠날 시간이야.",
+    aglaea: "목욕탕에서 보자.",
+    anaxa: "그럼, 내가 하나 묻지.",
+    anonymous: "정체는 비밀, 이름도 흔적도 남기지 마.",
+    archer: "이상이 아니라 결과로 증명하겠다.",
+    argenti: "장미의 이름으로 맹세하지.",
+    arlan: "패피의 비상 연락망은 내가 맡을게.",
+    ashveil: "재 속에 가린 진실은 언젠가 드러나.",
+    asta: "이제 진짜 더는 안 사야 하는데…",
+    aventurine: "베팅은 언제든 환영이야.",
+    bailu: "따뜻한 물부터 마셔, 화는 좀 줄이고!",
+    black_swan: "기억은 호박처럼 부드럽고 오래 남아.",
+    blade: "죽음은 끝이 아니라 또 다른 시작일 뿐.",
+    boothill: "판이 열리면 한탕 크게 가는 거지.",
+    bronya: "회의 중이야. 끝나면 바로 답할게.",
+    caelus: "가자. 길은 결국 우리가 만드는 거니까.",
+    castorice: "지금도 계속 써 내려가는 중이야.",
+    cerydra: "공적 사안은 질서대로, 사적인 일은 나중에.",
+    cipher: "돈 냄새가 나는데?",
+    clara: "다 같이 소풍 가면 정말 좋겠다.",
+    cyrene: "파도처럼 조용히, 그러나 확실하게.",
+    dan_heng: "자료실 관련이면 나를 찾아.",
+    dr_ratio: "서두를 필요는 없어.",
+    evernight: "밤은 길어도 끝내 새벽은 와.",
+    feixiao: "한 판 붙고 싶은데?",
+    firefly: "나는 반드시 내 꿈을 찾을 거야.",
+    fugue: "말보다 침묵이 더 많은 걸 말해줄 때가 있어.",
+    fu_xuan: "개인 운세는 봐주지 않는다.",
+    gallagher: "페나코니의 개? 그렇게 불러도 상관없지.",
+    gepard: "근무 중이다. 답이 늦어도 이해해줘.",
+    guinaifen: "문제는 만들지 않고, 생겨도 겁내지 않아!",
+    hanya: "몽조 판단 중이니 방해하지 마.",
+    herta: "이 계정은 꺼뒀어. 용무는 아스타에게.",
+    himeko: "물 없이도 버티겠지만, 커피 없인 못 버텨.",
+    hook: "두더지파, 격투 클럽에 집합!",
+    huohuo: "무, 무서워도 해야 할 일은 해야 해…",
+    hyacine: "황혼의 뜰은 언제나 네 곁에 있어~",
+    hysilens: "안녕. 꿀술 한 잔만 줄래?",
+    jade: "보나제이드 교역은 언제든 환영이랍니다.",
+    jiaoqiu: "훠궈로 해결 못 할 문제는 없어.",
+    jing_yuan: "신책부에는 없어. 하지만 다 보고 있지.",
+    jingliu: "검은 멈추지 않는다. 나도 마찬가지다.",
+    kafka: "좋은 음악처럼, 모든 건 때가 되면 울려 퍼져.",
+    lingsha: "화를 낼 시간에 숨부터 고르자.",
+    luka: "답이 늦으면 훈련 중인 거야!",
+    luocha: "그저 지나가는 평범한 행상인일 뿐이오.",
+    lynx: "지금은 연락 불가. 야외에서 버티는 중.",
+    march_7th: "오늘도 3월 7일이야~",
+    misha: "조금만 더 힘내! 새로운 세계는 바로 앞이야!",
+    moze: "서명은 없어.",
+    mydei: "훈련 30%, 식단 70%.",
+    natasha: "로봇 거주구 왕진 중이야. 오기 전에 먼저 연락해.",
+    pela: "정보를 줄 땐 이름부터 밝혀줘.",
+    phainon: "태양을 찬양하라!",
+    pom_pom: "개척 보상은 폼폼에게 맡겨!",
+    qingque: "일은 해도 되는데, 내 놀이는 방해하지 마.",
+    rappa: "마음은 흐트러지지 않고, 악은 끝까지 쫓는다.",
+    robin: "우리의 날개를 서로 나눠 갖자.",
+    ruan_mei: "새 케이크네… 어디서 났지?",
+    saber: "검은 맹세를 위해 존재한다.",
+    sampo: "공인된 유물 중개업자 삼포 코스키라고~",
+    screwllum: "작은 벌레들이라도 다시 만날 수 있길 기대하지.",
+    seele: "할 말 있으면 똑바로 해.",
+    serval: "잠도 영감도 부족하네.",
+    silver_wolf: "모르면 게임에 끼지 마.",
+    sparkle: "진심도 연기도, 재밌으면 그만이야.",
+    sparxie: "채팅 끊기면 스파크시도 사라질 거야!",
+    stelle: "뭘 주워도 결국 길은 이어지더라.",
+    sushang: "책만 읽으면 졸린 건 무슨 병이지?",
+    the_dahlia: "왜 말이 없지?",
+    the_herta: "나야.",
+    tingyun: "싸우지 말고 말로 풀자~",
+    topaz: "출장 중이야~ 급하면 전화, 아니면 문자.",
+    tribbie: "트리비는 언제나 대기 중이야~",
+    welt: "열차 사람들은 언제나 연락을 유지해줘.",
+    xueyi: "폐관 중이다. 방해하지 마.",
+    yanqing: "공조사 오늘 신상품 나왔나? 아니.",
+    yao_guang: "승리만이 답이다.",
+    yukong: "한 번만 더 하늘을 날 수 있기를…",
+    yunli: "싸울래?"
   };
 
   const STYLE_PRESETS = {
@@ -321,18 +409,21 @@
     const aliases = uniqueStrings([character.displayName, ...(character.aliases || [])]);
     const stickerPack = Array.isArray(SPECIAL_STICKER_PACKS[character.id]) ? SPECIAL_STICKER_PACKS[character.id].slice() : ALL_STICKERS.slice();
     const localizedCharacter = { ...character, displayName: localizedDisplayName, aliases };
-    const searchTokens = uniqueStrings([character.id, localizedDisplayName, character.displayName, character.subtitle, character.iconFile.replace(/\.png$/i, ""), ...aliases]);
+    const popupSubtitle = POPUP_KOREAN_SUBTITLES[character.id] || character.subtitle || character.summary || null;
+    const searchTokens = uniqueStrings([character.id, localizedDisplayName, character.displayName, popupSubtitle, character.iconFile.replace(/\.png$/i, ""), ...aliases]);
     const record = {
       id: character.id,
       displayName: localizedDisplayName,
       group: character.group,
       releaseStatus: character.releaseStatus,
       iconFile: character.iconFile,
+      summary: character.summary || null,
       searchTokens,
       promptStatus: character.promptStatus,
       promptText: buildPromptText({ ...localizedCharacter, stickerPack, searchTokens }),
       stickerPack,
-      subtitle: character.subtitle || null,
+      stickerCount: stickerPack.length,
+      subtitle: popupSubtitle,
       promptSources: character.promptStatus === "ready" ? ["HoYoWiki", "HoYoLAB/공식 소개", "Fandom 로어 보완"] : ["서비스 레포 자산", "추가 공식 자료 확인 필요"]
     };
     CHARACTER_MAP.set(record.id, record);

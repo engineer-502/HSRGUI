@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "ChatGPT Star Rail UI",
   "version": "0.1.0",
-  "description": "Apply a Honkai: Star Rail style chat skin to ChatGPT conversation rendering.",
+  "description": "Apply a Honkai: Star Rail style chat skin to ChatGPT and Gemini conversation rendering.",
   "action": {
     "default_title": "HSR Chat Skin",
     "default_popup": "popup/popup.html"
@@ -12,16 +12,20 @@
   ],
   "host_permissions": [
     "https://chatgpt.com/*",
-    "https://chat.openai.com/*"
+    "https://chat.openai.com/*",
+    "https://gemini.google.com/*"
   ],
   "content_scripts": [
     {
       "matches": [
         "https://chatgpt.com/*",
-        "https://chat.openai.com/*"
+        "https://chat.openai.com/*",
+        "https://gemini.google.com/*"
       ],
       "js": [
+        "shared/stickerCharacterPacks.js",
         "shared/characterCatalog.js",
+        "shared/config.js",
         "content/selectors.js",
         "content/splitter.js",
         "content/stickers.js",
@@ -43,7 +47,8 @@
       ],
       "matches": [
         "https://chatgpt.com/*",
-        "https://chat.openai.com/*"
+        "https://chat.openai.com/*",
+        "https://gemini.google.com/*"
       ]
     }
   ]

@@ -1,0 +1,5 @@
+.codex_logs/
+__pycache__/
+*.pyc
+classify_stickers_from_gallery.py
+sticker_labeler_app.py

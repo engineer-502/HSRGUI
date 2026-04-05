@@ -1,0 +1,1586 @@
+{
+  "generated_at": "2026-04-05T12:27:30.860471+00:00",
+  "source": "Honkai: Star Rail Wiki Fandom MediaWiki API + local manual override",
+  "total_stickers": 428,
+  "subjects": {
+    "march_7th": {
+      "display_name": "March 7th",
+      "stickers": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        38,
+        224,
+        249,
+        250,
+        251
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 1",
+        "Pom-Pom Gallery No. 3",
+        "Pom-Pom Gallery No. 14",
+        "Pom-Pom Gallery No. 16"
+      ],
+      "character_id": "march_7th"
+    },
+    "dan_heng": {
+      "display_name": "Dan Heng",
+      "stickers": [
+        17,
+        35,
+        288
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 2",
+        "Pom-Pom Gallery No. 3",
+        "Pom-Pom Gallery No. 18"
+      ],
+      "character_id": "dan_heng"
+    },
+    "himeko": {
+      "display_name": "Himeko",
+      "stickers": [
+        18,
+        63,
+        172
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 2",
+        "Pom-Pom Gallery No. 4",
+        "Pom-Pom Gallery No. 11"
+      ],
+      "character_id": "himeko"
+    },
+    "welt": {
+      "display_name": "Welt",
+      "stickers": [
+        19,
+        64,
+        156
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 2",
+        "Pom-Pom Gallery No. 4",
+        "Pom-Pom Gallery No. 10"
+      ],
+      "character_id": "welt"
+    },
+    "herta": {
+      "display_name": "Herta",
+      "stickers": [
+        20,
+        175,
+        235
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 2",
+        "Pom-Pom Gallery No. 11",
+        "Pom-Pom Gallery No. 15"
+      ],
+      "character_id": "herta"
+    },
+    "asta": {
+      "display_name": "Asta",
+      "stickers": [
+        21,
+        125
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 2",
+        "Pom-Pom Gallery No. 8"
+      ],
+      "character_id": "asta"
+    },
+    "arlan": {
+      "display_name": "Arlan",
+      "stickers": [
+        22,
+        93
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 2",
+        "Pom-Pom Gallery No. 6"
+      ],
+      "character_id": "arlan"
+    },
+    "kafka": {
+      "display_name": "Kafka",
+      "stickers": [
+        23,
+        81,
+        82,
+        83,
+        84
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 2",
+        "Pom-Pom Gallery No. 6"
+      ],
+      "character_id": "kafka"
+    },
+    "serval": {
+      "display_name": "Serval",
+      "stickers": [
+        24,
+        96
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 2",
+        "Pom-Pom Gallery No. 6"
+      ],
+      "character_id": "serval"
+    },
+    "silver_wolf": {
+      "display_name": "Silver Wolf",
+      "stickers": [
+        25,
+        59,
+        60,
+        300
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 2",
+        "Pom-Pom Gallery No. 4",
+        "Pom-Pom Gallery No. 19"
+      ],
+      "character_id": "silver_wolf"
+    },
+    "hook": {
+      "display_name": "Hook",
+      "stickers": [
+        26,
+        127
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 2",
+        "Pom-Pom Gallery No. 8"
+      ],
+      "character_id": "hook"
+    },
+    "gepard": {
+      "display_name": "Gepard",
+      "stickers": [
+        27,
+        61,
+        140
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 2",
+        "Pom-Pom Gallery No. 4",
+        "Pom-Pom Gallery No. 9"
+      ],
+      "character_id": "gepard"
+    },
+    "pela": {
+      "display_name": "Pela",
+      "stickers": [
+        28,
+        128
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 2",
+        "Pom-Pom Gallery No. 8"
+      ],
+      "character_id": "pela"
+    },
+    "sampo": {
+      "display_name": "Sampo",
+      "stickers": [
+        29,
+        92,
+        144,
+        188
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 2",
+        "Pom-Pom Gallery No. 6",
+        "Pom-Pom Gallery No. 9",
+        "Pom-Pom Gallery No. 12"
+      ],
+      "character_id": "sampo"
+    },
+    "clara": {
+      "display_name": "Clara",
+      "stickers": [
+        30,
+        62
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 2",
+        "Pom-Pom Gallery No. 4"
+      ],
+      "character_id": "clara"
+    },
+    "caelus": {
+      "display_name": "Caelus",
+      "stickers": [
+        31,
+        36,
+        217,
+        284,
+        313,
+        371,
+        403
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 2",
+        "Pom-Pom Gallery No. 3",
+        "Pom-Pom Gallery No. 14",
+        "Pom-Pom Gallery No. 18",
+        "Pom-Pom Gallery No. 20",
+        "Pom-Pom Gallery No. 24",
+        "Pom-Pom Gallery No. 26"
+      ],
+      "character_id": "caelus"
+    },
+    "stelle": {
+      "display_name": "Stelle",
+      "stickers": [
+        32,
+        37,
+        218,
+        283,
+        314,
+        369,
+        402
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 2",
+        "Pom-Pom Gallery No. 3",
+        "Pom-Pom Gallery No. 14",
+        "Pom-Pom Gallery No. 18",
+        "Pom-Pom Gallery No. 20",
+        "Pom-Pom Gallery No. 24",
+        "Pom-Pom Gallery No. 26"
+      ],
+      "character_id": "stelle"
+    },
+    "yanqing": {
+      "display_name": "Yanqing",
+      "stickers": [
+        33,
+        34,
+        252
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 3",
+        "Pom-Pom Gallery No. 16"
+      ],
+      "character_id": "yanqing"
+    },
+    "blade": {
+      "display_name": "Blade",
+      "stickers": [
+        39,
+        85,
+        86,
+        87,
+        88
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 3",
+        "Pom-Pom Gallery No. 6"
+      ],
+      "character_id": "blade"
+    },
+    "yukong": {
+      "display_name": "Yukong",
+      "stickers": [
+        40,
+        53,
+        126
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 3",
+        "Pom-Pom Gallery No. 4",
+        "Pom-Pom Gallery No. 8"
+      ],
+      "character_id": "yukong"
+    },
+    "tingyun": {
+      "display_name": "Tingyun",
+      "stickers": [
+        41,
+        142,
+        298
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 3",
+        "Pom-Pom Gallery No. 9",
+        "Pom-Pom Gallery No. 19"
+      ],
+      "character_id": "tingyun"
+    },
+    "qingque": {
+      "display_name": "Qingque",
+      "stickers": [
+        42,
+        143
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 3",
+        "Pom-Pom Gallery No. 9"
+      ],
+      "character_id": "qingque"
+    },
+    "luocha": {
+      "display_name": "Luocha",
+      "stickers": [
+        43,
+        57,
+        58,
+        304
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 3",
+        "Pom-Pom Gallery No. 4",
+        "Pom-Pom Gallery No. 19"
+      ],
+      "character_id": "luocha"
+    },
+    "jing_yuan": {
+      "display_name": "Jing Yuan",
+      "stickers": [
+        44,
+        45,
+        52,
+        55,
+        56,
+        268
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 3",
+        "Pom-Pom Gallery No. 4",
+        "Pom-Pom Gallery No. 17"
+      ],
+      "character_id": "jing_yuan"
+    },
+    "sushang": {
+      "display_name": "Sushang",
+      "stickers": [
+        46,
+        95,
+        141,
+        254
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 3",
+        "Pom-Pom Gallery No. 6",
+        "Pom-Pom Gallery No. 9",
+        "Pom-Pom Gallery No. 16"
+      ],
+      "character_id": "sushang"
+    },
+    "bailu": {
+      "display_name": "Bailu",
+      "stickers": [
+        47,
+        48,
+        124,
+        255
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 3",
+        "Pom-Pom Gallery No. 8",
+        "Pom-Pom Gallery No. 16"
+      ],
+      "character_id": "bailu"
+    },
+    "seele": {
+      "display_name": "Seele",
+      "stickers": [
+        49,
+        50,
+        51,
+        301
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 4",
+        "Pom-Pom Gallery No. 19"
+      ],
+      "character_id": "seele"
+    },
+    "bronya": {
+      "display_name": "Bronya",
+      "stickers": [
+        54,
+        240,
+        302
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 4",
+        "Pom-Pom Gallery No. 15",
+        "Pom-Pom Gallery No. 19"
+      ],
+      "character_id": "bronya"
+    },
+    "wubbaboo": {
+      "display_name": "Wubbaboo",
+      "stickers": [
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 5"
+      ],
+      "character_id": null
+    },
+    "luka": {
+      "display_name": "Luka",
+      "stickers": [
+        89,
+        90,
+        91
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 6"
+      ],
+      "character_id": "luka"
+    },
+    "natasha": {
+      "display_name": "Natasha",
+      "stickers": [
+        94
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 6"
+      ],
+      "character_id": "natasha"
+    },
+    "pom_pom": {
+      "display_name": "Pom-Pom",
+      "stickers": [
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110,
+        111,
+        112,
+        234,
+        303
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 7",
+        "Pom-Pom Gallery No. 15",
+        "Pom-Pom Gallery No. 19"
+      ],
+      "character_id": "pom_pom"
+    },
+    "dan_heng_imbibitor_lunae": {
+      "display_name": "Dan Heng • Imbibitor Lunae",
+      "stickers": [
+        113,
+        114,
+        115,
+        116
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 8"
+      ],
+      "character_id": "dan_heng"
+    },
+    "fu_xuan": {
+      "display_name": "Fu Xuan",
+      "stickers": [
+        117,
+        118,
+        119,
+        120
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 8"
+      ],
+      "character_id": "fu_xuan"
+    },
+    "lynx": {
+      "display_name": "Lynx",
+      "stickers": [
+        121,
+        122,
+        123
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 8"
+      ],
+      "character_id": "lynx"
+    },
+    "topaz_and_numby": {
+      "display_name": "Topaz and Numby",
+      "stickers": [
+        129,
+        130,
+        131,
+        132,
+        239
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 9",
+        "Pom-Pom Gallery No. 15"
+      ],
+      "character_id": "topaz"
+    },
+    "jingliu": {
+      "display_name": "Jingliu",
+      "stickers": [
+        133,
+        134,
+        135,
+        136
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 9"
+      ],
+      "character_id": "jingliu"
+    },
+    "guinaifen": {
+      "display_name": "Guinaifen",
+      "stickers": [
+        137,
+        138,
+        139,
+        159,
+        160
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 9",
+        "Pom-Pom Gallery No. 10"
+      ],
+      "character_id": "guinaifen"
+    },
+    "huohuo": {
+      "display_name": "Huohuo",
+      "stickers": [
+        145,
+        146,
+        147,
+        148
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 10"
+      ],
+      "character_id": "huohuo"
+    },
+    "argenti": {
+      "display_name": "Argenti",
+      "stickers": [
+        149,
+        150,
+        151,
+        152
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 10"
+      ],
+      "character_id": "argenti"
+    },
+    "hanya": {
+      "display_name": "Hanya",
+      "stickers": [
+        153,
+        154,
+        155
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 10"
+      ],
+      "character_id": "hanya"
+    },
+    "other": {
+      "display_name": "Other",
+      "stickers": [
+        157,
+        176,
+        190,
+        191,
+        192,
+        208,
+        221,
+        222,
+        223,
+        316,
+        333,
+        401,
+        404
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 10",
+        "Pom-Pom Gallery No. 11",
+        "Pom-Pom Gallery No. 12",
+        "Pom-Pom Gallery No. 13",
+        "Pom-Pom Gallery No. 14",
+        "Pom-Pom Gallery No. 20",
+        "Pom-Pom Gallery No. 21",
+        "Pom-Pom Gallery No. 26"
+      ],
+      "character_id": null
+    },
+    "tail": {
+      "display_name": "Tail",
+      "stickers": [
+        158
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 10"
+      ],
+      "character_id": null
+    },
+    "ruan_mei": {
+      "display_name": "Ruan Mei",
+      "stickers": [
+        161,
+        162,
+        163,
+        164
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 11"
+      ],
+      "character_id": "ruan_mei"
+    },
+    "dr_ratio": {
+      "display_name": "Dr. Ratio",
+      "stickers": [
+        165,
+        166,
+        167,
+        168
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 11"
+      ],
+      "character_id": "dr_ratio"
+    },
+    "xueyi": {
+      "display_name": "Xueyi",
+      "stickers": [
+        169,
+        170,
+        171,
+        256
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 11",
+        "Pom-Pom Gallery No. 16"
+      ],
+      "character_id": "xueyi"
+    },
+    "peppy": {
+      "display_name": "Peppy",
+      "stickers": [
+        173
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 11"
+      ],
+      "character_id": null
+    },
+    "screwllum": {
+      "display_name": "Screwllum",
+      "stickers": [
+        174,
+        370
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 11",
+        "Pom-Pom Gallery No. 24"
+      ],
+      "character_id": "screwllum"
+    },
+    "black_swan": {
+      "display_name": "Black Swan",
+      "stickers": [
+        177,
+        178,
+        179,
+        180
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 12"
+      ],
+      "character_id": "black_swan"
+    },
+    "sparkle": {
+      "display_name": "Sparkle",
+      "stickers": [
+        181,
+        182,
+        183,
+        184,
+        237,
+        238
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 12",
+        "Pom-Pom Gallery No. 15"
+      ],
+      "character_id": "sparkle"
+    },
+    "misha": {
+      "display_name": "Misha",
+      "stickers": [
+        185,
+        186,
+        187
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 12"
+      ],
+      "character_id": "misha"
+    },
+    "clockie": {
+      "display_name": "Clockie",
+      "stickers": [
+        189,
+        207
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 12",
+        "Pom-Pom Gallery No. 13"
+      ],
+      "character_id": null
+    },
+    "acheron": {
+      "display_name": "Acheron",
+      "stickers": [
+        193,
+        194,
+        195,
+        196
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 13"
+      ],
+      "character_id": "acheron"
+    },
+    "aventurine": {
+      "display_name": "Aventurine",
+      "stickers": [
+        197,
+        198,
+        199,
+        200
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 13"
+      ],
+      "character_id": "aventurine"
+    },
+    "gallagher": {
+      "display_name": "Gallagher",
+      "stickers": [
+        201,
+        202,
+        203
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 13"
+      ],
+      "character_id": "gallagher"
+    },
+    "mr_domescreen": {
+      "display_name": "Mr. Domescreen",
+      "stickers": [
+        204
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 13"
+      ],
+      "character_id": null
+    },
+    "kakavasha": {
+      "display_name": "Kakavasha",
+      "stickers": [
+        205
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 13"
+      ],
+      "character_id": null
+    },
+    "hanu": {
+      "display_name": "Hanu",
+      "stickers": [
+        206
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 13"
+      ],
+      "character_id": null
+    },
+    "robin": {
+      "display_name": "Robin",
+      "stickers": [
+        209,
+        210,
+        211,
+        212,
+        287
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 14",
+        "Pom-Pom Gallery No. 18"
+      ],
+      "character_id": "robin"
+    },
+    "boothill": {
+      "display_name": "Boothill",
+      "stickers": [
+        213,
+        214,
+        215,
+        216,
+        285,
+        286
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 14",
+        "Pom-Pom Gallery No. 18"
+      ],
+      "character_id": "boothill"
+    },
+    "dancy": {
+      "display_name": "Dancy",
+      "stickers": [
+        219
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 14"
+      ],
+      "character_id": null
+    },
+    "boss_stone": {
+      "display_name": "Boss Stone",
+      "stickers": [
+        220
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 14"
+      ],
+      "character_id": null
+    },
+    "firefly": {
+      "display_name": "Firefly",
+      "stickers": [
+        225,
+        226,
+        227,
+        228
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 15"
+      ],
+      "character_id": "firefly"
+    },
+    "jade": {
+      "display_name": "Jade",
+      "stickers": [
+        229,
+        230,
+        231,
+        232
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 15"
+      ],
+      "character_id": "jade"
+    },
+    "old_oti": {
+      "display_name": "Old Oti",
+      "stickers": [
+        233
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 15"
+      ],
+      "character_id": null
+    },
+    "sunday": {
+      "display_name": "Sunday",
+      "stickers": [
+        236,
+        289,
+        290,
+        291,
+        292,
+        297
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 15",
+        "Pom-Pom Gallery No. 19"
+      ],
+      "character_id": null
+    },
+    "yunli": {
+      "display_name": "Yunli",
+      "stickers": [
+        241,
+        242,
+        243,
+        244
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 16"
+      ],
+      "character_id": "yunli"
+    },
+    "jiaoqiu": {
+      "display_name": "Jiaoqiu",
+      "stickers": [
+        245,
+        246,
+        247,
+        248
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 16"
+      ],
+      "character_id": "jiaoqiu"
+    },
+    "huaiyan": {
+      "display_name": "Huaiyan",
+      "stickers": [
+        253
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 16"
+      ],
+      "character_id": null
+    },
+    "feixiao": {
+      "display_name": "Feixiao",
+      "stickers": [
+        257,
+        258,
+        259,
+        260
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 17"
+      ],
+      "character_id": "feixiao"
+    },
+    "lingsha": {
+      "display_name": "Lingsha",
+      "stickers": [
+        261,
+        262,
+        263,
+        264
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 17"
+      ],
+      "character_id": "lingsha"
+    },
+    "moze": {
+      "display_name": "Moze",
+      "stickers": [
+        265,
+        266,
+        267
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 17"
+      ],
+      "character_id": "moze"
+    },
+    "tuskpir": {
+      "display_name": "Tuskpir",
+      "stickers": [
+        269
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 17"
+      ],
+      "character_id": null
+    },
+    "fuyuan": {
+      "display_name": "Fuyuan",
+      "stickers": [
+        270
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 17"
+      ],
+      "character_id": null
+    },
+    "flying_aureus": {
+      "display_name": "Flying Aureus",
+      "stickers": [
+        271
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 17"
+      ],
+      "character_id": null
+    },
+    "carmella": {
+      "display_name": "Carmella",
+      "stickers": [
+        272
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 17"
+      ],
+      "character_id": null
+    },
+    "rappa": {
+      "display_name": "Rappa",
+      "stickers": [
+        273,
+        274,
+        275,
+        276
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 18"
+      ],
+      "character_id": "rappa"
+    },
+    "slumbernana_monkey": {
+      "display_name": "Slumbernana Monkey",
+      "stickers": [
+        277,
+        278,
+        279
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 18"
+      ],
+      "character_id": null
+    },
+    "mr_reca": {
+      "display_name": "Mr. Reca",
+      "stickers": [
+        280,
+        281,
+        282
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 18"
+      ],
+      "character_id": null
+    },
+    "fugue": {
+      "display_name": "Fugue",
+      "stickers": [
+        293,
+        294,
+        295,
+        296
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 19"
+      ],
+      "character_id": "fugue"
+    },
+    "shush": {
+      "display_name": "Shush",
+      "stickers": [
+        299
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 19"
+      ],
+      "character_id": null
+    },
+    "the_herta": {
+      "display_name": "The Herta",
+      "stickers": [
+        305,
+        306,
+        307,
+        308
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 20"
+      ],
+      "character_id": "the_herta"
+    },
+    "aglaea": {
+      "display_name": "Aglaea",
+      "stickers": [
+        309,
+        310,
+        311,
+        312
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 20"
+      ],
+      "character_id": "aglaea"
+    },
+    "spirithief_bartholos": {
+      "display_name": "Spirithief Bartholos",
+      "stickers": [
+        315
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 20"
+      ],
+      "character_id": null
+    },
+    "verax_leo": {
+      "display_name": "Verax Leo",
+      "stickers": [
+        317
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 20"
+      ],
+      "character_id": null
+    },
+    "dromas": {
+      "display_name": "Dromas",
+      "stickers": [
+        318
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 20"
+      ],
+      "character_id": null
+    },
+    "chimera": {
+      "display_name": "Chimera",
+      "stickers": [
+        319,
+        320,
+        331,
+        332
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 20",
+        "Pom-Pom Gallery No. 21"
+      ],
+      "character_id": null
+    },
+    "tribbie": {
+      "display_name": "Tribbie",
+      "stickers": [
+        321,
+        322
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 21"
+      ],
+      "character_id": "tribbie"
+    },
+    "trianne": {
+      "display_name": "Trianne",
+      "stickers": [
+        323
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 21"
+      ],
+      "character_id": null
+    },
+    "trinnon": {
+      "display_name": "Trinnon",
+      "stickers": [
+        324
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 21"
+      ],
+      "character_id": null
+    },
+    "mydei": {
+      "display_name": "Mydei",
+      "stickers": [
+        325,
+        326,
+        327,
+        328
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 21"
+      ],
+      "character_id": "mydei"
+    },
+    "phainon": {
+      "display_name": "Phainon",
+      "stickers": [
+        329,
+        353,
+        354,
+        355,
+        356,
+        357,
+        421,
+        422,
+        423,
+        424
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 21",
+        "Pom-Pom Gallery No. 23",
+        "Pom-Pom Gallery Luckin Coffee"
+      ],
+      "character_id": "phainon"
+    },
+    "castorice": {
+      "display_name": "Castorice",
+      "stickers": [
+        330,
+        337,
+        338,
+        339,
+        340,
+        417,
+        418,
+        419,
+        420
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 21",
+        "Pom-Pom Gallery No. 22",
+        "Pom-Pom Gallery Luckin Coffee"
+      ],
+      "character_id": "castorice"
+    },
+    "mem": {
+      "display_name": "Mem",
+      "stickers": [
+        334,
+        335,
+        336,
+        358,
+        359,
+        360
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 21",
+        "Pom-Pom Gallery No. 23"
+      ],
+      "character_id": null
+    },
+    "anaxa": {
+      "display_name": "Anaxa",
+      "stickers": [
+        341,
+        342,
+        343,
+        344
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 22"
+      ],
+      "character_id": "anaxa"
+    },
+    "hyacine": {
+      "display_name": "Hyacine",
+      "stickers": [
+        345,
+        346,
+        347,
+        348
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 22"
+      ],
+      "character_id": "hyacine"
+    },
+    "cipher": {
+      "display_name": "Cipher",
+      "stickers": [
+        349,
+        350,
+        351,
+        352
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 22"
+      ],
+      "character_id": "cipher"
+    },
+    "hysilens": {
+      "display_name": "Hysilens",
+      "stickers": [
+        361,
+        362,
+        363,
+        364
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 23"
+      ],
+      "character_id": "hysilens"
+    },
+    "cerydra": {
+      "display_name": "Cerydra",
+      "stickers": [
+        365,
+        366,
+        367,
+        368
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 23"
+      ],
+      "character_id": "cerydra"
+    },
+    "cyrene": {
+      "display_name": "Cyrene",
+      "stickers": [
+        372,
+        381,
+        382,
+        383,
+        384
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 24"
+      ],
+      "character_id": "cyrene"
+    },
+    "evernight": {
+      "display_name": "Evernight",
+      "stickers": [
+        373,
+        374,
+        375,
+        376
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 24"
+      ],
+      "character_id": "evernight"
+    },
+    "dan_heng_permansor_terrae": {
+      "display_name": "Dan Heng • Permansor Terrae",
+      "stickers": [
+        377,
+        378,
+        379,
+        380
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 24"
+      ],
+      "character_id": "dan_heng"
+    },
+    "gurgling_fish": {
+      "display_name": "Gurgling Fish",
+      "stickers": [
+        385
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 25"
+      ],
+      "character_id": null
+    },
+    "gummy_roll": {
+      "display_name": "Gummy Roll",
+      "stickers": [
+        386
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 25"
+      ],
+      "character_id": null
+    },
+    "dux_beast": {
+      "display_name": "Dux Beast",
+      "stickers": [
+        387
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 25"
+      ],
+      "character_id": null
+    },
+    "toasty_dragon": {
+      "display_name": "Toasty Dragon",
+      "stickers": [
+        388
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 25"
+      ],
+      "character_id": null
+    },
+    "the_dahlia": {
+      "display_name": "The Dahlia",
+      "stickers": [
+        389,
+        390,
+        391,
+        392
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 25"
+      ],
+      "character_id": "the_dahlia"
+    },
+    "oatmeal": {
+      "display_name": "Oatmeal",
+      "stickers": [
+        393
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 25"
+      ],
+      "character_id": null
+    },
+    "candied_apple": {
+      "display_name": "Candied Apple",
+      "stickers": [
+        394
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 25"
+      ],
+      "character_id": null
+    },
+    "fig_stew": {
+      "display_name": "Fig Stew",
+      "stickers": [
+        395
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 25"
+      ],
+      "character_id": null
+    },
+    "butterfly_cake": {
+      "display_name": "Butterfly Cake",
+      "stickers": [
+        396
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 25"
+      ],
+      "character_id": null
+    },
+    "nanus": {
+      "display_name": "Nanus",
+      "stickers": [
+        397
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 25"
+      ],
+      "character_id": null
+    },
+    "krenabis": {
+      "display_name": "Krenabis",
+      "stickers": [
+        398
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 25"
+      ],
+      "character_id": null
+    },
+    "master_cat_thief": {
+      "display_name": "Master Cat-Thief",
+      "stickers": [
+        399
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 25"
+      ],
+      "character_id": null
+    },
+    "vigethos": {
+      "display_name": "Vigethos",
+      "stickers": [
+        400
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 25"
+      ],
+      "character_id": null
+    },
+    "yao_guang": {
+      "display_name": "Yao Guang",
+      "stickers": [
+        405,
+        406,
+        407,
+        408
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 26"
+      ],
+      "character_id": "yao_guang"
+    },
+    "sparxie": {
+      "display_name": "Sparxie",
+      "stickers": [
+        409,
+        410,
+        411,
+        412
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 26"
+      ],
+      "character_id": "sparxie"
+    },
+    "ashveil": {
+      "display_name": "Ashveil",
+      "stickers": [
+        413,
+        414,
+        415,
+        416
+      ],
+      "source_pages": [
+        "Pom-Pom Gallery No. 26"
+      ],
+      "character_id": "ashveil"
+    },
+    "castorice_bonus": {
+      "display_name": "Castorice Bonus",
+      "stickers": [
+        425,
+        426,
+        427,
+        428
+      ],
+      "source_pages": [
+        "manual_visual_override"
+      ],
+      "character_id": "castorice"
+    }
+  }
+}

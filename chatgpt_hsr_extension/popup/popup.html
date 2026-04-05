@@ -10,8 +10,19 @@
     <main class="panel">
       <header class="header">
         <h1>HSR Chat Skin</h1>
-        <p>ChatGPT Star Rail character catalog</p>
+        <p>ChatGPT + Gemini Star Rail character catalog</p>
       </header>
+
+      <section class="group">
+        <div class="site-tabs" role="tablist" aria-label="Target site">
+          <button id="siteTabChatGPT" type="button" class="site-tab" role="tab" data-site-key="chatgpt">
+            ChatGPT
+          </button>
+          <button id="siteTabGemini" type="button" class="site-tab" role="tab" data-site-key="gemini">
+            Gemini
+          </button>
+        </div>
+      </section>
 
       <section class="group">
         <label class="row toggle-row" for="enabledToggle">
@@ -73,11 +84,13 @@
       </section>
 
       <footer class="footer">
-        Applies to: <code>chatgpt.com</code>, <code>chat.openai.com</code>
+        Applies to: <code>chatgpt.com</code>, <code>chat.openai.com</code>, <code>gemini.google.com</code>
       </footer>
     </main>
 
+    <script src="../shared/stickerCharacterPacks.js"></script>
     <script src="../shared/characterCatalog.js"></script>
+    <script src="../shared/config.js"></script>
     <script src="popup.js"></script>
   </body>
 </html>

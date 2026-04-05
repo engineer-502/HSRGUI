@@ -11,17 +11,17 @@
       <section class="chat-frame">
         <header class="chat-header">
           <div>
-            <h1>Asta</h1>
-            <p>Cannot buy this...</p>
+            <h1 id="previewHeaderTitle">오공열차</h1>
+            <p id="previewHeaderSubtitle">인간개조의 용광로</p>
           </div>
           <img class="close" src="../assets/symbols/close.png" alt="close" />
         </header>
 
         <div class="chat-scroll">
           <article class="turn assistant">
-            <div class="meta">
-              <img src="../assets/icons/asta.png" alt="Asta" />
-              <span>Asta</span>
+            <div class="meta" id="previewAssistantMetaTop">
+              <img id="previewAssistantIconTop" src="../assets/icons/asta.png" alt="Asta" />
+              <span id="previewAssistantNameTop">Asta</span>
             </div>
             <div class="bubble white">
               Have you seen this before? There is an online chat event in town this week.
@@ -32,17 +32,17 @@
           </article>
 
           <article class="turn user">
-            <div class="meta right">
-              <span>Stelle</span>
-              <img src="../assets/icons/stelle.png" alt="Stelle" />
+            <div class="meta right" id="previewUserMeta">
+              <span id="previewUserName">오공이</span>
+              <img id="previewUserIcon" src="../assets/icons/stelle.png" alt="Stelle" />
             </div>
             <div class="bubble gold">Send the link. I am interested.</div>
           </article>
 
           <article class="turn assistant">
-            <div class="meta">
-              <img src="../assets/icons/asta.png" alt="Asta" />
-              <span>Asta</span>
+            <div class="meta" id="previewAssistantMetaBottom">
+              <img id="previewAssistantIconBottom" src="../assets/icons/asta.png" alt="Asta" />
+              <span id="previewAssistantNameBottom">Asta</span>
             </div>
             <div class="bubble white">Sometimes a random sticker appears below the assistant response.</div>
             <div class="sticker-wrap">
@@ -151,6 +151,8 @@
       </section>
     </main>
 
+    <script src="../shared/characterCatalog.js"></script>
+    <script src="../shared/config.js"></script>
     <script src="preview.js"></script>
   </body>
 </html>
