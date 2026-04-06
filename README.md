@@ -1,5 +1,9 @@
 ﻿# ChatGPT HSR UI Extension
 
+<img width="1920" height="1080" alt="6" src="https://github.com/user-attachments/assets/d9525876-7981-4d0d-b149-b20477a76d05" />
+<img width="1920" height="1080" alt="3" src="https://github.com/user-attachments/assets/b3446f20-1381-48cd-8eb6-45bbfe9bdda1" />
+
+
 ChatGPT 및 Gemini 웹 대화 화면(`chatgpt.com`, `chat.openai.com`, `gemini.google.com`)에 Honkai: Star Rail 스타일 채팅 스킨을 적용하는 MV3 크롬 익스텐션입니다.
 
 - 원본 GPT/Gemini 메시지 렌더러 구조(마크다운/코드/표/이미지/피드백 버튼)는 최대한 유지
