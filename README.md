@@ -1,59 +1,45 @@
-# ChatGPT HSR UI Extension
+ChatGPT HSR UI Extension
+ChatGPT 및 Gemini 웹 대화 화면(chatgpt.com, chat.openai.com, gemini.google.com)에 Honkai: Star Rail 스타일 채팅 스킨을 적용하는 MV3 크롬 익스텐션입니다.
 
-ChatGPT 웹 대화 화면(`chatgpt.com`, `chat.openai.com`)에 Honkai: Star Rail 스타일 채팅 스킨을 적용하는 MV3 크롬 익스텐션입니다.
-
-- 원본 GPT 메시지 렌더러 구조(마크다운/코드/표/이미지/피드백 버튼)는 최대한 유지
-- 시각 레이어를 HSR 말풍선/아바타/헤더 스타일로 오버라이드
-- 어시스턴트 말풍선 분리 렌더링 + 스티커 자동 삽입
-- 팝업에서 캐릭터 프리셋/사용자명/헤더 텍스트 변경 가능
-
-## 주요 기능
-
-1. HSR 채팅 UI 스킨
-- 사용자/어시스턴트 버블 스타일 분리
-- 캐릭터 아바타 + 이름 표시
-- 상단 고정 헤더 스타일 적용
-
-2. 문장 분리 렌더링
-- 어시스턴트 문단을 설정값 기준으로 분할(기본 max chars: 180)
-- 코드/표/이미지 등 구조형 블록은 원형 유지
-
-3. 스트리밍 표시 제어
-- 생성 중에는 로딩 버블(`...`) 기반 표시
-- 완료 시점에 버블 렌더링 확정
-
-4. 스티커 삽입
-- 현재 정책: 라이브 어시스턴트 응답 기준 `첫 응답 + 2턴당 1회`
-- 캐릭터 프리셋 변경 시 스티커팩 자동 교체
-
-5. 캐릭터 프리셋
-- `삼칠이 (March. 7th)`
-- `아케론`
-- `카스토리스`
-
-6. 팝업 프롬프트 복사
-- 캐릭터별 페르소나 프롬프트 미리보기
-- 버튼 1회로 클립보드 복사 가능
-
-## 실행 방법
-
-### 1) 로컬 로드
-1. 크롬에서 `chrome://extensions` 접속
-2. 우측 상단 `개발자 모드` ON
-3. `압축해제된 확장 프로그램을 로드` 클릭
-4. `chatgpt_hsr_extension` 폴더 선택
-5. 확장 카드에서 `새로고침(↻)` 후 ChatGPT 탭 새로고침
-
-### 2) 사용
-1. ChatGPT 대화 페이지 진입
-2. 확장 팝업 열기
-3. `Enabled` ON 확인
-4. `Actor Preset`, `My Name`, `Header Title/Subtitle` 설정
-5. 필요 시 `Persona Prompt`에서 프롬프트 복사 후 GPT 개인 맞춤설정에 붙여넣기
-
-## 폴더 / 코드 구조
-
-```text
+원본 GPT/Gemini 메시지 렌더러 구조(마크다운/코드/표/이미지/피드백 버튼)는 최대한 유지
+시각 레이어를 HSR 말풍선/아바타/헤더 스타일로 오버라이드
+어시스턴트 말풍선 분리 렌더링 + 스티커 자동 삽입
+팝업에서 캐릭터 프리셋/사용자명/헤더 텍스트 변경 가능
+주요 기능
+HSR 채팅 UI 스킨
+사용자/어시스턴트 버블 스타일 분리
+캐릭터 아바타 + 이름 표시
+상단 고정 헤더 스타일 적용
+문장 분리 렌더링
+어시스턴트 문단을 설정값 기준으로 분할(기본 max chars: 180)
+코드/표/이미지 등 구조형 블록은 원형 유지
+스트리밍 표시 제어
+생성 중에는 로딩 버블(...) 기반 표시
+완료 시점에 버블 렌더링 확정
+스티커 삽입
+캐릭터 프리셋 변경 시 스티커팩 자동 교체
+Gemini 최종 렌더 기준으로 턴당 고정 스티커를 유지
+캐릭터 프리셋
+전체 80개 캐릭터 카탈로그 제공
+79개 캐릭터 프롬프트 ready, 1개 특수 슬롯 pending
+캐릭터별 페르소나 프롬프트 미리보기/복사 지원
+팝업 프롬프트 복사
+캐릭터별 페르소나 프롬프트 미리보기
+버튼 1회로 클립보드 복사 가능
+실행 방법
+1) 로컬 로드
+크롬에서 chrome://extensions 접속
+우측 상단 개발자 모드 ON
+압축해제된 확장 프로그램을 로드 클릭
+chatgpt_hsr_extension 폴더 선택
+확장 카드에서 새로고침(↻) 후 ChatGPT 탭 새로고침
+2) 사용
+ChatGPT 또는 Gemini 대화 페이지 진입
+확장 팝업 열기
+Enabled ON 확인
+Actor Preset, My Name, Header Title/Subtitle 설정
+필요 시 Persona Prompt에서 프롬프트 복사 후 GPT 개인 맞춤설정에 붙여넣기
+폴더 / 코드 구조
 chatgpt_hsr_extension/
   manifest.json                 # MV3 설정, 권한, content script/popup 등록
   content/
@@ -61,10 +47,12 @@ chatgpt_hsr_extension/
     content.css                 # HSR 스킨 스타일 전체
     selectors.js                # ChatGPT DOM 셀렉터/블록 분류/스트리밍 탐지
     splitter.js                 # 문장 분리 알고리즘(ko 우선)
-    stickers.js                 # 스티커팩 정의/정규화/랜덤 픽
+    stickers.js                 # 전체 스티커풀 정규화/랜덤 픽
+  shared/
+    characterCatalog.js         # 캐릭터 카탈로그/프롬프트/스티커 매핑
   popup/
-    popup.html                  # 설정 UI(프리셋/이름/헤더/프롬프트 복사)
-    popup.js                    # storage sync 저장/불러오기, 프리셋 연동
+    popup.html                  # 설정 UI(검색/캐릭터 선택/프롬프트 복사)
+    popup.js                    # storage sync 저장/불러오기, 카탈로그 연동
     popup.css                   # 팝업 스타일
   preview/
     preview.html/.css/.js       # 컴포넌트 샘플 프리뷰
@@ -72,40 +60,32 @@ chatgpt_hsr_extension/
     icons/                      # 캐릭터 아바타
     stickers/                   # 스티커 이미지
     symbols/                    # UI 심볼
-```
+주요 설정값 의미 (hsrConfig)
+enabled: 스킨 활성화 여부
+splitMaxChars: 문장 분리 최대 글자수
+assistantCharacterId: 선택한 캐릭터 id
+stickerPack: 선택 캐릭터 기준 스티커 파일 목록
+userName: 사용자 말풍선 표시 이름
+headerTitle, headerSubtitle: 상단 고정 헤더 텍스트
+참고:
 
-## 주요 설정값 의미 (`hsrConfig`)
-
-- `enabled`: 스킨 활성화 여부
-- `splitMaxChars`: 문장 분리 최대 글자수
-- `actorPreset`: 캐릭터 프리셋
-  - `march7th-stelle`
-  - `acheron-stelle`
-  - `castorice-stelle`
-- `stickerPack`: 프리셋별 스티커 파일 목록
-- `userName`: 사용자 말풍선 표시 이름
-- `headerTitle`, `headerSubtitle`: 상단 고정 헤더 텍스트
-
-## 캐릭터별 리소스 매핑
-
-- 삼칠이: `assets/icons/March_7th.png`, `sticker_1~16`
-- 아케론: `assets/icons/Acheron.png`, `sticker_193~196`
-- 카스토리스: `assets/icons/Castorice.png`, `sticker_330, 336~340, 425`
-
-## 트러블슈팅
-
-1. 설정이 반영되지 않음
-- `chrome://extensions`에서 확장 `새로고침(↻)`
-- ChatGPT 탭 `Ctrl+F5` 하드 리로드
-
-2. 스티커/아이콘이 안 뜸
-- `assets/icons`, `assets/stickers` 파일명 대소문자 확인
-- `manifest.json`의 `web_accessible_resources` 확인
-
-3. UI가 깨짐
-- ChatGPT DOM 업데이트 영향 가능성 있음
-- `content/selectors.js` 셀렉터 재점검 필요
-
+기존 actorPreset 저장값은 로드 시 자동으로 assistantCharacterId로 마이그레이션됨
+스티커는 전용 팩이 없는 캐릭터의 경우 sticker_1~428 공용 풀을 사용함
+캐릭터별 리소스 매핑
+March 7th: assets/icons/March_7th.png, sticker_1~16
+Acheron: assets/icons/Acheron.png, sticker_193~196
+Castorice: assets/icons/Castorice.png, sticker_330, 336~340, 425
+기타 캐릭터: assets/icons/*.png, 공용 스티커 풀 sticker_1~428
+트러블슈팅
+설정이 반영되지 않음
+chrome://extensions에서 확장 새로고침(↻)
+ChatGPT 탭 Ctrl+F5 하드 리로드
+스티커/아이콘이 안 뜸
+assets/icons, assets/stickers 파일명 대소문자 확인
+manifest.json의 web_accessible_resources 확인
+UI가 깨짐
+ChatGPT 또는 Gemini DOM 업데이트 영향 가능성 있음
+content/selectors.js 셀렉터 재점검 필요
 ---
 
 ## 법적 고지 및 책임 의무 (Fan-made / Unofficial)
