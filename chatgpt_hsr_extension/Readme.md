@@ -1,8 +1,8 @@
 ﻿# ChatGPT HSR UI Extension
 
-ChatGPT 웹 대화 화면(`chatgpt.com`, `chat.openai.com`)에 Honkai: Star Rail 스타일 채팅 스킨을 적용하는 MV3 크롬 익스텐션입니다.
+ChatGPT 및 Gemini 웹 대화 화면(`chatgpt.com`, `chat.openai.com`, `gemini.google.com`)에 Honkai: Star Rail 스타일 채팅 스킨을 적용하는 MV3 크롬 익스텐션입니다.
 
-- 원본 GPT 메시지 렌더러 구조(마크다운/코드/표/이미지/피드백 버튼)는 최대한 유지
+- 원본 GPT/Gemini 메시지 렌더러 구조(마크다운/코드/표/이미지/피드백 버튼)는 최대한 유지
 - 시각 레이어를 HSR 말풍선/아바타/헤더 스타일로 오버라이드
 - 어시스턴트 말풍선 분리 렌더링 + 스티커 자동 삽입
 - 팝업에서 캐릭터 프리셋/사용자명/헤더 텍스트 변경 가능
@@ -23,13 +23,13 @@ ChatGPT 웹 대화 화면(`chatgpt.com`, `chat.openai.com`)에 Honkai: Star Rail
 - 완료 시점에 버블 렌더링 확정
 
 4. 스티커 삽입
-- 현재 정책: 라이브 어시스턴트 응답 기준 `첫 응답 + 2턴당 1회`
 - 캐릭터 프리셋 변경 시 스티커팩 자동 교체
+- Gemini 최종 렌더 기준으로 턴당 고정 스티커를 유지
 
 5. 캐릭터 프리셋
-- `삼칠이 (March. 7th)`
-- `아케론`
-- `카스토리스`
+- 전체 80개 캐릭터 카탈로그 제공
+- 79개 캐릭터 프롬프트 ready, 1개 특수 슬롯 pending
+- 캐릭터별 페르소나 프롬프트 미리보기/복사 지원
 
 6. 팝업 프롬프트 복사
 - 캐릭터별 페르소나 프롬프트 미리보기
@@ -45,7 +45,7 @@ ChatGPT 웹 대화 화면(`chatgpt.com`, `chat.openai.com`)에 Honkai: Star Rail
 5. 확장 카드에서 `새로고침(↻)` 후 ChatGPT 탭 새로고침
 
 ### 2) 사용
-1. ChatGPT 대화 페이지 진입
+1. ChatGPT 또는 Gemini 대화 페이지 진입
 2. 확장 팝업 열기
 3. `Enabled` ON 확인
 4. `Actor Preset`, `My Name`, `Header Title/Subtitle` 설정
@@ -108,7 +108,7 @@ chatgpt_hsr_extension/
 - `manifest.json`의 `web_accessible_resources` 확인
 
 3. UI가 깨짐
-- ChatGPT DOM 업데이트 영향 가능성 있음
+- ChatGPT 또는 Gemini DOM 업데이트 영향 가능성 있음
 - `content/selectors.js` 셀렉터 재점검 필요
 
 ---
