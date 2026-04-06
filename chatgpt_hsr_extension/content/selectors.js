@@ -240,6 +240,15 @@
   }
 
   function isGeminiComposerGenerating() {
+    const readyCandidates = Array.from(
+      document.querySelectorAll(
+        'button[aria-label*="메시지 보내기"], button[aria-label*="보내기"], .send-button.submit'
+      )
+    );
+    if (readyCandidates.some((node) => isElementVisiblyEnabled(node))) {
+      return false;
+    }
+
     const candidates = Array.from(
       document.querySelectorAll(
         'button[aria-label*="대답 생성 중지"], button[aria-label*="생성 중지"], button[aria-label*="Stop"], .send-button.stop'
@@ -471,16 +480,36 @@
         return false;
       }
 
+      const contentRoot = this.getPrimaryContentRoot(turnNode, "assistant");
+      const readyToSend = Array.from(
+        document.querySelectorAll(
+          'button[aria-label*="메시지 보내기"], button[aria-label*="보내기"], .send-button.submit'
+        )
+      ).some((node) => isElementVisiblyEnabled(node));
       const busySignal =
         turnNode.matches('[aria-busy="true"]') ||
         turnNode.querySelector('message-content[aria-busy="true"]') ||
         turnNode.querySelector('.markdown[aria-busy="true"]') ||
         turnNode.querySelector('[aria-busy="true"]');
+      const responseText = String(
+        (contentRoot && contentRoot.textContent) || turnNode.textContent || ""
+      ).trim();
 
       if (
         !busySignal &&
         !turnNode.querySelector(".response-container-header-processing-state")
       ) {
+        return false;
+      }
+
+      // Gemini can leave processing UI or stop-button state around briefly after the
+      // response text is already complete. If the content is present and no node is
+      // actually marked busy anymore, treat the turn as complete.
+      if (!busySignal && responseText.length > 0) {
+        return false;
+      }
+
+      if (readyToSend && responseText.length > 0) {
         return false;
       }
 

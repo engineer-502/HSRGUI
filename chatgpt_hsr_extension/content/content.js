@@ -85,7 +85,13 @@
     }
 
     const text = parts.join(" ").replace(/\s+/g, " ").trim();
-    const mediaCount = contentRoot.querySelectorAll("img,pre,table").length;
+    const mediaCount = Array.from(contentRoot.querySelectorAll("img,pre,table")).filter(
+      (node) =>
+        node instanceof Element &&
+        !node.closest(
+          ".hsr-role-meta, .hsr-random-sticker, .hsr-split-shell, .hsr-stream-preview"
+        )
+    ).length;
     return hashString(`${RENDER_VERSION}|${text}|${mediaCount}`);
   }
 
@@ -481,6 +487,18 @@
 
   function isGeminiGenerationActive() {
     if (state.siteKey !== "gemini") {
+      return false;
+    }
+
+    const readyCandidates = Array.from(
+      document.querySelectorAll(
+        'button[aria-label*="메시지 보내기"], button[aria-label*="보내기"], .send-button.submit'
+      )
+    );
+    if (
+      readyCandidates.some((node) => node instanceof HTMLElement && !node.hasAttribute("disabled") &&
+        node.getAttribute("aria-disabled") !== "true" && node.offsetParent !== null)
+    ) {
       return false;
     }
 
@@ -1206,6 +1224,10 @@
     const streamAgeMs = streamStartTs > 0 ? now - streamStartTs : 0;
     const assistantMeta = getOrCreateAssistantMeta(turnNode, initialPass);
     const hasDecoratedContent = hasDecoratedAssistantContent(contentRoot);
+    const geminiStreamingText =
+      state.siteKey === "gemini" ? extractStreamingText(contentRoot) : "";
+    const hasGeminiStreamingText =
+      state.siteKey === "gemini" && hasVisibleText(geminiStreamingText);
 
     if (
       !initialPass &&
@@ -1237,7 +1259,12 @@
       if (turnIsActiveAssistant && (wasStreaming || (!initialPass && !hasProcessedHash))) {
         // Keep loader until explicit completion signal + stable quiet period,
         // or a long safety timeout to avoid infinite loading on DOM changes.
-        if (!fallbackFinalize) {
+        const geminiCanFinalizeNow =
+          state.siteKey === "gemini" &&
+          hasGeminiStreamingText &&
+          (!isGeminiGenerationActive() || (streamAgeMs >= 4500 && stableFor >= 900));
+
+        if (!fallbackFinalize && !geminiCanFinalizeNow) {
           if (!hasFinalActions || stableFor < STREAM_STABLE_MS) {
             streaming = true;
           }
@@ -1245,10 +1272,6 @@
       }
     }
 
-    const geminiStreamingText =
-      state.siteKey === "gemini" ? extractStreamingText(contentRoot) : "";
-    const hasGeminiStreamingText =
-      state.siteKey === "gemini" && hasVisibleText(geminiStreamingText);
     const staleGeminiStreaming =
       state.siteKey === "gemini" &&
       Boolean(turnNode.dataset.hsrProcessedHash) &&
@@ -1258,9 +1281,11 @@
 
     if (streaming && state.siteKey === "gemini" && hasGeminiStreamingText) {
       const geminiShouldForceFinalize =
-        (!isGeminiGenerationActive() && stableFor >= 420) ||
-        (hasFinalActions && stableFor >= 620) ||
-        (streamAgeMs >= 900 && stableFor >= GEMINI_FORCE_FINALIZE_MS);
+        (!isGeminiGenerationActive() &&
+          (stableFor >= 420 ||
+            (hasFinalActions && stableFor >= 620) ||
+            (streamAgeMs >= 900 && stableFor >= GEMINI_FORCE_FINALIZE_MS))) ||
+        (streamAgeMs >= 4500 && stableFor >= 900);
 
       if (geminiShouldForceFinalize) {
         streaming = false;
@@ -1499,15 +1524,31 @@
         continue;
       }
 
+      const isStreamingNow = window.HSRSelectors.isStreaming(turn);
+      if (isStreamingNow) {
+        return turn;
+      }
+
+      if (state.siteKey === "gemini") {
+        const contentRoot = window.HSRSelectors.getPrimaryContentRoot(turn, "assistant");
+        const geminiText = extractStreamingText(
+          contentRoot instanceof HTMLElement ? contentRoot : turn
+        );
+
+        if (
+          turn.dataset.hsrWasStreaming === "1" &&
+          hasVisibleText(geminiText) &&
+          !isGeminiGenerationActive()
+        ) {
+          continue;
+        }
+      }
+
       if (turn.dataset.hsrWasStreaming === "1") {
         return turn;
       }
 
       if (!turn.dataset.hsrProcessedHash) {
-        return turn;
-      }
-
-      if (window.HSRSelectors.isStreaming(turn)) {
         return turn;
       }
     }
