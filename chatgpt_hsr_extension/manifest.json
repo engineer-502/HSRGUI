@@ -1,11 +1,21 @@
 ﻿{
   "manifest_version": 3,
-  "name": "ChatGPT Star Rail UI",
+  "name": "스타레일 GUI",
   "version": "2.0.0",
   "description": "Apply a Honkai: Star Rail style chat skin to ChatGPT and Gemini conversation rendering.",
   "action": {
-    "default_title": "HSR Chat Skin",
-    "default_popup": "popup/popup.html"
+    "default_title": "스타레일 GUI",
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "assets/extension-icons/icon-16.png",
+      "32": "assets/extension-icons/icon-32.png"
+    }
+  },
+  "icons": {
+    "16": "assets/extension-icons/icon-16.png",
+    "32": "assets/extension-icons/icon-32.png",
+    "48": "assets/extension-icons/icon-48.png",
+    "128": "assets/extension-icons/icon-128.png"
   },
   "permissions": [
     "storage"
