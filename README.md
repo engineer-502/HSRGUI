@@ -3,8 +3,7 @@
 <img width="1920" height="1080" alt="6" src="https://github.com/user-attachments/assets/d9525876-7981-4d0d-b149-b20477a76d05" />
 
 ---
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/a0rBFKL9u6c?si=Cn9z8wswV8UMQ3AS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+유튜브 : https://youtu.be/a0rBFKL9u6c?si=LMUTzhRbohqSIXKb
 
 ChatGPT 및 Gemini 웹 대화 화면(`chatgpt.com`, `chat.openai.com`, `gemini.google.com`)에 Honkai: Star Rail 스타일 채팅 스킨을 적용하는 MV3 크롬 익스텐션입니다.
 
