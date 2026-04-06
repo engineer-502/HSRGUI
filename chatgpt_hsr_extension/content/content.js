@@ -14,7 +14,7 @@
   const catalog = window.HSRCharacterCatalog;
   const configModel = window.HSRConfigModel;
   const CONFIG_KEY = configModel.CONFIG_KEY;
-  const RENDER_VERSION = "hsr-render-v11-gemini-live-preview";
+  const RENDER_VERSION = "hsr-render-v13-gemini-sticker-center";
   const STREAM_STABLE_MS = 1400;
   const STREAM_FALLBACK_FINALIZE_MS = 12000;
   const GEMINI_FORCE_FINALIZE_MS = 2200;
@@ -898,6 +898,18 @@
   }
 
   function decorateBlocks(contentRoot, role, streaming) {
+    const useGeminiNativeLayout =
+      state.siteKey === "gemini" && role === "assistant";
+
+    if (useGeminiNativeLayout) {
+      contentRoot.querySelectorAll(".hsr-split-shell").forEach((node) => node.remove());
+      contentRoot.querySelectorAll(".hsr-original-paragraph").forEach((node) => {
+        if (node instanceof HTMLElement) {
+          node.classList.remove("hsr-original-paragraph");
+        }
+      });
+    }
+
     const blocks = window.HSRSelectors.getRenderableBlocks(contentRoot);
 
     for (const block of blocks) {
@@ -937,6 +949,7 @@
       const canSplit =
         role === "assistant" &&
         !streaming &&
+        !useGeminiNativeLayout &&
         kind === "paragraph" &&
         ((
           window.HSRSelectors.isParagraphCandidate(block) &&
@@ -1111,7 +1124,13 @@
     if (!meta) {
       meta = {
         responseIndex: state.assistantTurnCounter + 1,
-        finalized: Boolean(initialPass)
+        finalized: Boolean(initialPass),
+        lockedContentRoot: null,
+        finalizedHash: "",
+        layoutMode: "",
+        shouldInjectSticker: null,
+        stickerInjected: false,
+        stickerFile: ""
       };
       state.assistantTurnCounter += 1;
       state.turnMeta.set(turnNode, meta);
@@ -1119,19 +1138,117 @@
     return meta;
   }
 
-  function maybeInjectSticker(turnNode, contentRoot) {
-    if (turnNode.dataset.hsrStickerInjected === "1") {
+  function normalizeContentRoot(rawContentRoot) {
+    if (!rawContentRoot || !(rawContentRoot instanceof HTMLElement)) {
+      return null;
+    }
+
+    return rawContentRoot.matches("p,span,code,strong,em")
+      ? rawContentRoot.parentElement || rawContentRoot
+      : rawContentRoot;
+  }
+
+  function resolveAssistantContentRoot(turnNode, role, assistantMeta = null) {
+    const pinnedHiddenRoot = state.streamHiddenRoots.get(turnNode);
+    if (pinnedHiddenRoot && pinnedHiddenRoot.isConnected) {
+      return normalizeContentRoot(pinnedHiddenRoot);
+    }
+
+    if (state.siteKey === "gemini" && role === "assistant" && assistantMeta) {
+      const locked = assistantMeta.lockedContentRoot;
+      if (locked && locked instanceof HTMLElement && locked.isConnected) {
+        return normalizeContentRoot(locked);
+      }
+    }
+
+    const normalized = normalizeContentRoot(window.HSRSelectors.getPrimaryContentRoot(turnNode, role));
+    if (!normalized) {
+      return null;
+    }
+
+    if (state.siteKey === "gemini" && role === "assistant" && assistantMeta) {
+      assistantMeta.lockedContentRoot = normalized;
+    }
+
+    return normalized;
+  }
+
+  function maybeInjectSticker(turnNode, contentRoot, assistantMeta = null) {
+    const host =
+      contentRoot.matches("p,span,code,strong,em")
+        ? contentRoot.parentElement || contentRoot
+        : contentRoot;
+    if (!host || !(host instanceof HTMLElement)) {
       return;
     }
 
-    state.liveAssistantFinalizedCount += 1;
-    const shouldInject = state.liveAssistantFinalizedCount % 2 === 1;
+    if (!assistantMeta) {
+      assistantMeta = getOrCreateAssistantMeta(turnNode, false);
+    }
 
-    if (!shouldInject) {
+    if (assistantMeta.shouldInjectSticker === null) {
+      if (state.siteKey === "gemini") {
+        assistantMeta.shouldInjectSticker = true;
+      } else {
+        state.liveAssistantFinalizedCount += 1;
+        assistantMeta.shouldInjectSticker = state.liveAssistantFinalizedCount % 2 === 1;
+      }
+    }
+
+    if (!assistantMeta.shouldInjectSticker) {
+      turnNode.querySelectorAll(".hsr-random-sticker").forEach((node) => node.remove());
+      assistantMeta.stickerInjected = false;
+      assistantMeta.stickerFile = "";
+      turnNode.dataset.hsrStickerInjected = "0";
+      turnNode.dataset.hsrStickerFile = "";
       return;
     }
 
-    const stickerFile = window.HSRStickers.pickSticker(state.config.stickerPack);
+    const targetBlocks = window.HSRSelectors
+      .getRenderableBlocks(host)
+      .filter(
+        (node) =>
+          node instanceof HTMLElement &&
+          !node.classList.contains("hsr-role-meta") &&
+          !node.classList.contains("hsr-random-sticker") &&
+          !node.classList.contains("hsr-typing-shell") &&
+          !node.classList.contains("hsr-seq-loader")
+      );
+    const lastBlock =
+      targetBlocks.length > 0 ? targetBlocks[targetBlocks.length - 1] : null;
+    const anchor =
+      lastBlock &&
+      lastBlock.parentElement &&
+      lastBlock.parentElement.classList &&
+      lastBlock.parentElement.classList.contains("hsr-block-wrap")
+        ? lastBlock.parentElement
+        : lastBlock;
+
+    const allStickers = Array.from(turnNode.querySelectorAll(".hsr-random-sticker"));
+    const existingSticker = allStickers.shift() || null;
+    for (const duplicate of allStickers) {
+      duplicate.remove();
+    }
+
+    if (existingSticker) {
+      if (anchor && anchor.parentElement === host) {
+        anchor.after(existingSticker);
+      } else if (existingSticker.parentElement !== host) {
+        host.appendChild(existingSticker);
+      } else {
+        host.appendChild(existingSticker);
+      }
+      assistantMeta.stickerInjected = true;
+      turnNode.dataset.hsrStickerInjected = "1";
+      if (!assistantMeta.stickerFile) {
+        assistantMeta.stickerFile = String(turnNode.dataset.hsrStickerFile || "");
+      }
+      return;
+    }
+
+    const stickerFile =
+      assistantMeta.stickerFile || window.HSRStickers.pickSticker(state.config.stickerPack);
+    assistantMeta.stickerFile = stickerFile;
     const stickerUrl = window.HSRStickers.stickerRuntimeUrl(stickerFile);
 
     const shell = document.createElement("div");
@@ -1144,18 +1261,20 @@
     image.loading = "lazy";
     image.addEventListener("error", () => {
       shell.remove();
+      assistantMeta.stickerInjected = false;
+      assistantMeta.stickerFile = "";
       turnNode.dataset.hsrStickerInjected = "0";
       turnNode.dataset.hsrStickerFile = "";
     });
 
-    const host =
-      contentRoot.matches("p,span,code,strong,em")
-        ? contentRoot.parentElement || contentRoot
-        : contentRoot;
-
     shell.appendChild(image);
-    host.appendChild(shell);
+    if (anchor && anchor.parentElement === host) {
+      anchor.after(shell);
+    } else {
+      host.appendChild(shell);
+    }
 
+    assistantMeta.stickerInjected = true;
     turnNode.dataset.hsrStickerInjected = "1";
     turnNode.dataset.hsrStickerFile = stickerFile;
   }
@@ -1170,19 +1289,11 @@
     turnNode.classList.toggle("hsr-assistant", role === "assistant");
     turnNode.classList.toggle("hsr-user", role === "user");
 
-    const pinnedHiddenRoot = state.streamHiddenRoots.get(turnNode);
-    const rawContentRoot =
-      pinnedHiddenRoot && pinnedHiddenRoot.isConnected
-        ? pinnedHiddenRoot
-        : window.HSRSelectors.getPrimaryContentRoot(turnNode, role);
-    if (!rawContentRoot || !(rawContentRoot instanceof HTMLElement)) {
+    const assistantMeta = role === "assistant" ? getOrCreateAssistantMeta(turnNode, initialPass) : null;
+    const contentRoot = resolveAssistantContentRoot(turnNode, role, assistantMeta);
+    if (!contentRoot || !(contentRoot instanceof HTMLElement)) {
       return;
     }
-
-    const contentRoot =
-      rawContentRoot.matches("p,span,code,strong,em")
-        ? rawContentRoot.parentElement || rawContentRoot
-        : rawContentRoot;
 
     contentRoot.classList.add("hsr-message-container");
     ensureRoleMeta(turnNode, role, contentRoot);
@@ -1222,12 +1333,13 @@
     const hasProcessedHash = Boolean(turnNode.dataset.hsrProcessedHash);
     const streamStartTs = Number(turnNode.dataset.hsrStreamStartTs || 0);
     const streamAgeMs = streamStartTs > 0 ? now - streamStartTs : 0;
-    const assistantMeta = getOrCreateAssistantMeta(turnNode, initialPass);
     const hasDecoratedContent = hasDecoratedAssistantContent(contentRoot);
     const geminiStreamingText =
       state.siteKey === "gemini" ? extractStreamingText(contentRoot) : "";
     const hasGeminiStreamingText =
       state.siteKey === "gemini" && hasVisibleText(geminiStreamingText);
+
+    const hasVisibleSticker = Boolean(turnNode.querySelector(".hsr-random-sticker"));
 
     if (
       !initialPass &&
@@ -1235,7 +1347,8 @@
       !wasStreaming &&
       !turnIsActiveAssistant &&
       turnNode.dataset.hsrProcessedHash === currentHash &&
-      hasDecoratedContent
+      hasDecoratedContent &&
+      (assistantMeta.shouldInjectSticker !== true || hasVisibleSticker)
     ) {
       setAssistantStreamingState(turnNode, contentRoot, false);
       turnNode.classList.remove("hsr-pending");
@@ -1332,13 +1445,31 @@
     turnNode.removeAttribute("data-hsr-stream-start-ts");
 
     const hash = currentHash;
-    if (turnNode.dataset.hsrProcessedHash !== hash || streamEnded || !hasDecoratedContent) {
+    const needsRedecorate =
+      turnNode.dataset.hsrProcessedHash !== hash ||
+      !hasDecoratedContent ||
+      (state.siteKey === "gemini" &&
+        assistantMeta &&
+        assistantMeta.finalizedHash !== hash &&
+        assistantMeta.layoutMode === "native");
+
+    if (needsRedecorate) {
       decorateBlocks(contentRoot, role, false);
       turnNode.dataset.hsrProcessedHash = hash;
+      if (assistantMeta) {
+        assistantMeta.finalizedHash = hash;
+        assistantMeta.layoutMode =
+          state.siteKey === "gemini" && role === "assistant" ? "native" : "hsr";
+        assistantMeta.lockedContentRoot = contentRoot;
+      }
     }
 
     if (initialPass) {
       assistantMeta.finalized = true;
+      assistantMeta.finalizedHash = hash;
+      if (state.siteKey === "gemini") {
+        maybeInjectSticker(turnNode, contentRoot, assistantMeta);
+      }
       turnNode.removeAttribute("data-hsr-stream-preview-used");
       return;
     }
@@ -1357,7 +1488,7 @@
             node.classList.remove("hsr-final-enter");
             node.classList.remove("hsr-final-seq-hidden");
           });
-          maybeInjectSticker(turnNode, contentRoot);
+          maybeInjectSticker(turnNode, contentRoot, assistantMeta);
           turnNode.removeAttribute("data-hsr-final-anim-hash");
           return;
         }
@@ -1365,14 +1496,16 @@
         const animDelay = startFinalCascadeAnimation(contentRoot, hash);
         if (animDelay > 0) {
           window.setTimeout(() => {
-            maybeInjectSticker(turnNode, contentRoot);
+            maybeInjectSticker(turnNode, contentRoot, assistantMeta);
           }, animDelay + 40);
         } else {
-          maybeInjectSticker(turnNode, contentRoot);
+          maybeInjectSticker(turnNode, contentRoot, assistantMeta);
         }
       } else {
-        maybeInjectSticker(turnNode, contentRoot);
+        maybeInjectSticker(turnNode, contentRoot, assistantMeta);
       }
+    } else if (assistantMeta.shouldInjectSticker === true && !hasVisibleSticker) {
+      maybeInjectSticker(turnNode, contentRoot, assistantMeta);
     }
 
     if (streamEnded || streamPreviewUsed) {

@@ -763,13 +763,12 @@ html.hsr-enabled .hsr-sticker-img {
 html.hsr-site-gemini {
   --hsr-strip-max: 940px;
   --hsr-header-offset-x: 0px;
-  --hsr-gemini-viewport-recenter: calc(50% - 50vw);
   --hsr-gemini-edge-gap: clamp(12px, 4vw, 28px);
   --hsr-gemini-inline-inset: clamp(8px, 2vw, 18px);
   --hsr-gemini-lane-max: 840px;
+  --hsr-gemini-lane-shift: clamp(-24px, -1.4vw, -14px);
   --hsr-gemini-meta-inset: clamp(8px, 2.2vw, 18px);
-  --hsr-gemini-name-offset: calc(var(--hsr-avatar-size) + clamp(10px, 2vw, 16px));
-  --hsr-gemini-user-offset: var(--hsr-gemini-name-offset);
+  --hsr-gemini-bubble-inset: calc(var(--hsr-avatar-size) + clamp(10px, 2vw, 16px));
   --hsr-gemini-user-meta-inset: var(--hsr-gemini-meta-inset);
 }
 
@@ -778,11 +777,11 @@ html.hsr-site-gemini.hsr-enabled .hsr-conversation-root {
 }
 
 html.hsr-site-gemini.hsr-enabled .hsr-conversation-root::before {
-  left: calc(50% + var(--hsr-gemini-viewport-recenter)) !important;
+  left: 50% !important;
 }
 
 html.hsr-site-gemini.hsr-enabled .hsr-fixed-header {
-  left: calc(50% + var(--hsr-header-offset-x) + var(--hsr-gemini-viewport-recenter)) !important;
+  left: calc(50% + var(--hsr-header-offset-x)) !important;
 }
 
 html.hsr-site-gemini.hsr-enabled chat-window,
@@ -813,10 +812,15 @@ html.hsr-site-gemini.hsr-enabled response-container.hsr-turn {
 }
 
 html.hsr-site-gemini.hsr-enabled .hsr-turn {
+  width: min(var(--hsr-gemini-lane-max), calc(100vw - (var(--hsr-gemini-edge-gap) * 2))) !important;
   max-width: min(var(--hsr-gemini-lane-max), calc(100vw - (var(--hsr-gemini-edge-gap) * 2))) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
   padding-left: var(--hsr-gemini-inline-inset) !important;
   padding-right: var(--hsr-gemini-inline-inset) !important;
-  left: var(--hsr-gemini-viewport-recenter) !important;
+  left: auto !important;
+  right: auto !important;
+  transform: translateX(var(--hsr-gemini-lane-shift)) !important;
 }
 
 html.hsr-site-gemini.hsr-enabled .hsr-turn.hsr-user {
@@ -907,13 +911,15 @@ html.hsr-site-gemini.hsr-enabled .hsr-turn.hsr-assistant .markdown {
 }
 
 html.hsr-site-gemini.hsr-enabled .hsr-turn.hsr-assistant .hsr-message-container {
-  margin-left: var(--hsr-gemini-name-offset) !important;
-  max-width: calc(100% - var(--hsr-gemini-name-offset)) !important;
+  margin-left: var(--hsr-gemini-bubble-inset) !important;
+  margin-right: auto !important;
+  max-width: calc(100% - var(--hsr-gemini-bubble-inset)) !important;
 }
 
 html.hsr-site-gemini.hsr-enabled .hsr-turn.hsr-assistant .response-container-footer {
-  margin-left: var(--hsr-gemini-name-offset) !important;
-  max-width: calc(100% - var(--hsr-gemini-name-offset)) !important;
+  margin-left: var(--hsr-gemini-bubble-inset) !important;
+  margin-right: auto !important;
+  max-width: calc(100% - var(--hsr-gemini-bubble-inset)) !important;
   padding-top: 4px !important;
 }
 
@@ -923,8 +929,9 @@ html.hsr-site-gemini.hsr-enabled .hsr-turn.hsr-assistant .actions-container-v2 {
 }
 
 html.hsr-site-gemini.hsr-enabled .hsr-turn.hsr-user .hsr-message-container {
-  margin-right: var(--hsr-gemini-user-offset) !important;
-  max-width: calc(100% - var(--hsr-gemini-user-offset)) !important;
+  margin-left: auto !important;
+  margin-right: var(--hsr-gemini-bubble-inset) !important;
+  max-width: calc(100% - var(--hsr-gemini-bubble-inset)) !important;
 }
 
 html.hsr-site-gemini.hsr-enabled .hsr-turn.hsr-user .action-button,
@@ -970,7 +977,7 @@ html.hsr-site-gemini.hsr-enabled .hsr-turn.hsr-user .hsr-block-wrap {
 }
 
 html.hsr-site-gemini.hsr-enabled .hsr-turn.hsr-assistant > .hsr-stream-overlay {
-  padding-left: var(--hsr-gemini-name-offset) !important;
+  padding-left: var(--hsr-gemini-bubble-inset) !important;
 }
 
 html.hsr-site-gemini.hsr-enabled input-container {
@@ -979,7 +986,9 @@ html.hsr-site-gemini.hsr-enabled input-container {
   width: min(960px, calc(100vw - (var(--hsr-gemini-edge-gap) * 2))) !important;
   max-width: min(960px, calc(100vw - (var(--hsr-gemini-edge-gap) * 2))) !important;
   margin: 16px auto 0 !important;
-  left: var(--hsr-gemini-viewport-recenter) !important;
+  left: auto !important;
+  right: auto !important;
+  transform: translateX(var(--hsr-gemini-lane-shift)) !important;
   padding: 0 0 20px !important;
   background: transparent !important;
 }
